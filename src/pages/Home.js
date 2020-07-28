@@ -3,8 +3,8 @@ import { isPlainObject } from "@thi.ng/checks"
 import { VegaLite } from "react-vega"
 import * as K from "@-0/keys"
 import { facet_lines, matrix3x3 } from "../viz_specs"
-import { CTX } from "../context"
-import { log, flatten_listTopics, JL } from "../utils/data"
+//import { CTX } from "../context"
+//import { log, flatten_listTopics, JL } from "../utils/data"
 import { Filter } from "../components"
 
 export const Home = ({ data }) => {
@@ -22,7 +22,6 @@ export const Home = ({ data }) => {
                 }}
             />
             <VegaLite data={{ data }} spec={facet_lines} />
-            {/*<pre>{JL(data)}</pre>*/}
         </>
     )
 }

@@ -1,6 +1,4 @@
-import React from //useEffect, //useContext, //createElement,
-//useLayoutEffect,
-//useMemo,
+import React from //useMemo, //useLayoutEffect, //useEffect, //useContext, //createElement,
 "react"
 
 //import { getIn } from "@thi.ng/paths"
@@ -111,21 +109,18 @@ const router = {
     [K.ROUTER.POST]: INJECT_HEAD,
 }
 
-const App = () => {
-    return (
-        // @ts-ignore
-        <Provider
-            CFG={{
-                //count: 0,
-                [K.CFG_RUTR]: router /* circular dep!! [K.CFG_ROOT]: root*/,
-            }}
-        >
-            <Chrome>
-                <View />
-            </Chrome>
-        </Provider>
-    )
-}
+const App = () => (
+    <Provider
+        CFG={{
+            //count: 0,
+            [K.CFG_RUTR]: router /* circular dep!! [K.CFG_ROOT]: root*/,
+        }}
+    >
+        <Chrome>
+            <View />
+        </Chrome>
+    </Provider>
+)
 
 log("registered Commands:", out$.topics.entries())
 

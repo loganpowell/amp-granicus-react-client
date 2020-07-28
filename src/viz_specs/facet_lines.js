@@ -12,9 +12,9 @@ export const facet_lines = {
     //spec: { mark, encoding, etc. }
 
     //height: 300,
-    //width: "container",
-    facet: { row: { field: "name" } },
-    legend: { columns: 2 },
+    width: 800,
+    facet: { row: { field: "name", type: "nominal" } },
+    //legend: { columns: 2 },
     spec: {
         mark: {
             // can also just assign as string: "point" instead of object syntax
@@ -39,8 +39,8 @@ export const facet_lines = {
             },
             x: {
                 field: "created_at",
-                type: "ordinal",
-                timeUnit: "yearmonth",
+                type: "temporal",
+                //timeUnit: "yearweek",
             },
             //order: {
             //    field: "created_at",

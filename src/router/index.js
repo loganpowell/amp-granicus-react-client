@@ -73,189 +73,191 @@ export const routerCfg = async url => {
     const path = match[K.URL.PATH]
     const [, p_b] = path
 
-    const RES = new EquivMap([
-        // home page (empty path = "subscriptions")
-        [
-            { ...match, [K.URL.PATH]: [] },
-            {
-                [K.URL.DATA]: async () => {
-                    let list = await fetchSubs({
-                        topic: {
-                            ...(code && { code }),
-                            ...(id && { id }),
-                            ...(name && { name }),
-                            limit: 1000,
-                        },
-                        bulletin: {
-                            ...(bgn && { bgn }),
-                            ...(end && { end }),
-                            limit,
-                            sort,
-                        },
-                    })
-                    return {
-                        [K.DOM_HEAD]: {
-                            title: "Subscription Metrics",
-                            description: "Subscription Metrics",
-                            //img_url,
-                        },
-                        [K.DOM_BODY]: list,
-                    }
+    const RES =
+        new EquivMap([
+            // home page (empty path = "subscriptions")
+            [
+                { ...match, [K.URL.PATH]: [] },
+                {
+                    [K.URL.DATA]: async () => {
+                        let list = await fetchSubs({
+                            topic: {
+                                ...(code && { code }),
+                                ...(id && { id }),
+                                ...(name && { name }),
+                                limit: 1000,
+                            },
+                            bulletin: {
+                                ...(bgn && { bgn }),
+                                ...(end && { end }),
+                                limit,
+                                sort,
+                            },
+                        })
+                        return {
+                            [K.DOM_HEAD]: {
+                                title: "Subscription Metrics",
+                                description: "Subscription Metrics",
+                                //img_url,
+                            },
+                            [K.DOM_BODY]: list,
+                        }
+                    },
+                    [K.URL_PAGE]: "subs",
                 },
-                [K.URL.PAGE]: "subs",
-            },
-        ], // get match || 404 data
-        [
-            { ...match, [K.URL.PATH]: ["campaign"] },
-            {
-                [K.URL.DATA]: async () => {
-                    let list = await fetchCampaigns({
-                        campaign: { ...(id && { id }), limit: 1000 },
-                        bulletin: {
-                            limit,
-                            sort,
-                            ...(sender && { sender }),
-                        },
-                    })
-                    return {
-                        [K.DOM_HEAD]: {
-                            title: "Campaign Metrics",
-                            description: "Email marketing metrics by campaign",
-                            //img_url,
-                        },
-                        [K.DOM_BODY]: list,
-                    }
+            ],
+            [
+                { ...match, [K.URL.PATH]: ["campaign"] },
+                {
+                    [K.URL.DATA]: async () => {
+                        let list = await fetchCampaigns({
+                            campaign: { ...(id && { id }), limit: 1000 },
+                            bulletin: {
+                                limit,
+                                sort,
+                                ...(sender && { sender }),
+                            },
+                        })
+                        return {
+                            [K.DOM_HEAD]: {
+                                title: "Campaign Metrics",
+                                description:
+                                    "Email marketing metrics by campaign",
+                                //img_url,
+                            },
+                            [K.DOM_BODY]: list,
+                        }
+                    },
+                    [K.URL_PAGE]: "campaign",
                 },
-                [K.URL.PAGE]: "campaign",
-            },
-        ],
+            ],
 
-        [
-            { ...match, [K.URL.PATH]: ["sender"] },
-            {
-                [K.URL.DATA]: async () => {
-                    let list = await fetchSenders({
-                        sender: { limit: 1000, ...(id && { id }) },
-                        bulletin: { ...(camp && { camp }), limit, sort },
-                    })
-                    return {
-                        [K.DOM_HEAD]: {
-                            title: "Sender Metrics",
-                            description: "Email marketing metrics by sender",
-                            //img_url,
-                        },
-                        [K.DOM_BODY]: list,
-                    }
+            [
+                { ...match, [K.URL.PATH]: ["sender"] },
+                {
+                    [K.URL.DATA]: async () => {
+                        let list = await fetchSenders({
+                            sender: { limit: 1000, ...(id && { id }) },
+                            bulletin: { ...(camp && { camp }), limit, sort },
+                        })
+                        return {
+                            [K.DOM_HEAD]: {
+                                title: "Sender Metrics",
+                                description:
+                                    "Email marketing metrics by sender",
+                                //img_url,
+                            },
+                            [K.DOM_BODY]: list,
+                        }
+                    },
+                    [K.URL_PAGE]: "sender",
                 },
-                [K.URL.PAGE]: "sender",
-            },
-        ],
-        [
-            { ...match, [K.URL.PATH]: ["topic"] },
-            {
-                [K.URL.DATA]: async () => {
-                    let list = await fetchTopics({
-                        topic: {
-                            ...(name && { name }),
-                            ...(code && { code }),
-                            ...(id && { id }),
-                            limit: 1000,
-                        },
-                        bulletin: {
-                            ...(bgn && { bgn }),
-                            ...(end && { end }),
-                            limit,
-                            sort,
-                        },
-                    })
-                    log({ list }) // FIXME
-                    return {
-                        [K.DOM_HEAD]: {
-                            title: "Topic Metrics",
-                            description: "Email marketing metrics by topic",
-                            //img_url,
-                        },
-                        [K.DOM_BODY]: list,
-                    }
+            ],
+            [
+                { ...match, [K.URL.PATH]: ["topic"] },
+                {
+                    [K.URL.DATA]: async () => {
+                        let list = await fetchTopics({
+                            topic: {
+                                ...(name && { name }),
+                                ...(code && { code }),
+                                ...(id && { id }),
+                                limit: 1000,
+                            },
+                            bulletin: {
+                                ...(bgn && { bgn }),
+                                ...(end && { end }),
+                                limit,
+                                sort,
+                            },
+                        })
+                        log({ list }) // FIXME
+                        return {
+                            [K.DOM_HEAD]: {
+                                title: "Topic Metrics",
+                                description: "Email marketing metrics by topic",
+                                //img_url,
+                            },
+                            [K.DOM_BODY]: list,
+                        }
+                    },
+                    [K.URL_PAGE]: "topic",
                 },
-                [K.URL.PAGE]: "topic",
-            },
-        ],
-        [
-            { ...match, [K.URL.PATH]: ["bulletin"] },
-            {
-                [K.URL.DATA]: async () => {
-                    let list = await fetchBulletins({
-                        bulletin: { bgn, end, camp, sender, id },
-                    })
-                    return {
-                        [K.DOM_HEAD]: {
-                            title: "Bulletin Metrics",
-                            description: "Email marketing metrics by bulletin",
-                            //img_url,
-                        },
-                        [K.DOM_BODY]: list,
-                    }
+            ],
+            [
+                { ...match, [K.URL.PATH]: ["bulletin"] },
+                {
+                    [K.URL.DATA]: async () => {
+                        let list = await fetchBulletins({
+                            bulletin: { bgn, end, camp, sender, id },
+                        })
+                        return {
+                            [K.DOM_HEAD]: {
+                                title: "Bulletin Metrics",
+                                description:
+                                    "Email marketing metrics by bulletin",
+                                //img_url,
+                            },
+                            [K.DOM_BODY]: list,
+                        }
+                    },
+                    [K.URL_PAGE]: "subs",
                 },
-                [K.URL.PAGE]: "page-2",
-            },
-        ],
-        [
-            { ...match, [K.URL_PATH]: ["test"] },
-            { [K.URL_DATA]: () => "hello world", [K.URL_PAGE]: "test" },
-        ],
-    ]).get(match) || {
-        [K.URL.DATA]: () => "😢",
-        [K.URL.PAGE]: "page-2",
-    }
+            ],
+            [
+                { ...match, [K.URL_PATH]: ["test"] },
+                { [K.URL_DATA]: () => "hello world", [K.URL_PAGE]: "test" },
+            ], // get match || 404 data
+        ]).get(match) || log("FUCK")
 
-    let data = RES[K.URL.DATA]
-    let page = RES[K.URL.PAGE]
+    let data = RES[K.URL_DATA]
+    let page = RES[K.URL_PAGE]
+    //log("routed:", { page, data })
 
     return { [K.URL.DATA]: await data(), [K.URL.PAGE]: page }
 }
 
 const h = createElement
 
-const Page1 = ({ data }) => {
-    return h(
-        "pre",
-        { className: "ass" },
-        h("h1", null, `PAGE 1:`),
-        h(LogButton),
-        JSON.stringify(data, null, 2)
-    )
-}
+//const Page1 = ({ data }) => {
+//    return h(
+//        "pre",
+//        { className: "ass" },
+//        h("h1", null, `PAGE 1:`),
+//        h(LogButton),
+//        JSON.stringify(data, null, 2)
+//    )
+//}
 
-const Page2 = ({ data }) => {
-    return h(
-        "pre",
-        { className: "boobs" },
-        h("h1", null, `PAGE 2:`),
-        JSON.stringify(data, null, 2)
-    )
-}
+//const Page2 = ({ data }) => {
+//    return h(
+//        "pre",
+//        { className: "boobs" },
+//        h("h1", null, `PAGE 2:`),
+//        JSON.stringify(data, null, 2)
+//    )
+//}
 
 export const View = () => {
-    const { useCursor, $store$, DefaultView } = useContext(CTX)
+    const { useCursor, $store$ } = useContext(CTX)
     const [Page, pageCursor] = useCursor([K.$$_VIEW], "View Page")
     const [loading, loadingCursor] = useCursor([K.$$_LOAD], "View loading")
 
     //layouteffect needed due to async shit...
     useLayoutEffect(() => {
         // re-render when loading state changes
-        //log("re-rendered Page:", Page)
+        log("re-rendered Page:", { loading, Page })
         // cleanup
+
         return () => {
-            //log("cleaning up pageCursor and loadingCursor")
+            log("cleaning up:", { loading, Page })
             pageCursor.release()
             loadingCursor.release()
         }
     }, [loading, loadingCursor, Page, pageCursor])
 
     const store = $store$.deref()
-
-    //log({ store })
+    log({ store })
 
     const RenderPage =
         {
@@ -275,9 +277,14 @@ export const View = () => {
             ),
             topic: ByTopic,
             campaign: ByCampaign,
-        }[Page] || Page2
+        }[Page] || Home
+    // FIXME: @-0/browser Command accommodate URL_path:
+    // [] -> when data gets merged into the store
+    // en-masse (make sure to preserve the primary
+    // properties: { _PAGE_TEMPLATE, _ROUTE_LOADING,
+    // etc... }) TODO: allocate a `0` prop/key for empty/home path?
 
-    return loading ? (
+    return loading || loading === undefined ? (
         <div className='spinner_container'>
             <div className='spinner'>
                 <Spin size='large' />

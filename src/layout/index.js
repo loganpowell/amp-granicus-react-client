@@ -39,7 +39,12 @@ export const Chrome = ({ children }) => {
                 <Menu.Item key='3'>nav 3</Menu.Item>
             </Menu>
         </Header>*/}
-            <Content style={{ minHeight: "100vh" }}>
+            <Content
+                style={{
+                    minHeight: "100vh",
+                    //overflow: "hidden",
+                }}
+            >
                 {/*<Breadcrumb style={{ margin: "16px 0" }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -100,7 +105,13 @@ export const Chrome = ({ children }) => {
                         </SubMenu>*/}
                         </Menu>
                     </Sider>
-                    <Content style={{ padding: "0 24px", minHeight: 280 }}>
+                    <Content
+                        style={{
+                            padding: "0 24px",
+                            minHeight: 280,
+                            overflow: "hidden",
+                        }}
+                    >
                         {children}
                     </Content>
                 </Layout>
