@@ -1,0 +1,82 @@
+query listTopics {
+    listTopics {
+        items {
+            id
+            code
+            name
+            description
+            bulletins {
+                items {
+                    id
+                    bulletin_id
+                    topic_id
+                    created_at
+                    to_date {
+                        total_subscriptions
+                        new_subscriptions
+                        deleted_subscriptions
+                        bulletins_sent
+                    }
+                    this_period {
+                        total_subscriptions
+                        new_subscriptions
+                        deleted_subscriptions
+                        bulletins_sent
+                        allocated {
+                            direct
+                            overlay
+                            signup
+                            upload
+                            other
+                        }
+                    }
+                    bulletin {
+                        id
+                        campaign_id
+                        sender_email
+                        detail {
+                            subject
+                            delivery_status_name
+                            addresses_count
+                            success_count
+                            failed_count
+                            percent_success
+                            immediate_email_recipients
+                            emails_delivered
+                            emails_failed
+                            percent_emails_delivered
+                            opens_count
+                            percent_opened
+                            nonunique_opens_count
+                            links_count
+                            click_rate
+                            clicks_count
+                            nonunique_clicks_count
+                            digest_email_recipients
+                            unique_click_count
+                            total_click_count
+                            unsubscribes
+                        }
+                        topics {
+                            items {
+                                topic_id
+                                topic {
+                                    id
+                                    code
+                                    name
+                                    description
+                                }
+                            }
+                        }
+                        links {
+                            id
+                            link_url
+                            unique_click_count
+                            total_click_count
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
