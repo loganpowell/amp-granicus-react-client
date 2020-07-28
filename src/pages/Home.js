@@ -21,7 +21,7 @@ export const Home = ({ data }) => {
                     limit: "limit",
                 }}
             />
-            <VegaLite data={{ data }} spec={facet_lines} />
+            <VegaLite data={{ data: data.data }} spec={facet_lines} />
         </>
     )
 }

@@ -100,7 +100,7 @@ export const routerCfg = async url => {
                                 description: "Subscription Metrics",
                                 //img_url,
                             },
-                            [K.DOM_BODY]: list,
+                            [K.DOM_BODY]: { data: list },
                         }
                     },
                     [K.URL_PAGE]: "subs",
