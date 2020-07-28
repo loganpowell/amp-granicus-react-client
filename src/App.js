@@ -1,5 +1,4 @@
-import React from //useMemo, //useLayoutEffect, //useEffect, //useContext, //createElement,
-"react"
+import React from "react" //useMemo, //useLayoutEffect, //useEffect, //useContext, //createElement,
 
 //import { getIn } from "@thi.ng/paths"
 //import { isObject } from "@thi.ng/checks"
@@ -105,7 +104,7 @@ const Provider = ({ children, CFG = {} }) => {
 //export const root = document.getElementById("root")
 const router = {
     [K.ROUTER.RUTR]: routerCfg,
-    //[K.ROUTER.PRFX]: "ac/",
+    [K.ROUTER.PRFX]: "staging/",
     [K.ROUTER.POST]: INJECT_HEAD,
 }
 
