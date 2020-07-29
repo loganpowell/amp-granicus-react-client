@@ -1,51 +1,10 @@
 //import { getIn, setIn } from "@thi.ng/paths"
 import { isPlainObject, isArray } from "@thi.ng/checks"
 import { map, transduce, comp, push, scan } from "@thi.ng/transducers"
-import dayjs from "dayjs"
 
 export const log = console.log
 export const json = arg => JSON.stringify(arg, null, 2)
 export const JL = arg => log(json(arg))
-
-export const tooltip_lg = [
-    { field: "created_at", type: "temporal" },
-    { field: "subject", type: "nominal" },
-    { field: "name", type: "nominal" },
-    { field: "sender_email", type: "nominal" },
-    { field: "emails_delivered", type: "quantitative" },
-    { field: "unsubscribes", type: "quantitative" },
-    { field: "total_click_count", type: "quantitative" },
-    { field: "percent_opened", type: "quantitative" },
-    { field: "click_rate", type: "quantitative" },
-    { field: "engagement_rate", type: "quantitative" },
-    { field: "days_gap", type: "quantitative" },
-    { field: "bulletin_id", type: "nominal" },
-    { field: "campaign_id", type: "nominal" },
-    { field: "topic_id", type: "nominal" },
-]
-export const date_range_filter = (days = 360, past = 0) => {
-    const nom = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ]
-    const now = dayjs()
-    const end = now.subtract(past, "day")
-    const beg = end.subtract(days, "day")
-    return [
-        { year: beg.year(), month: nom[beg.month()], date: beg.date() },
-        { year: end.year(), month: nom[end.month()], date: end.date() },
-    ]
-}
 
 // TODO -> make more generalized (across queries)
 const flatten_listTopics = listTopics =>
@@ -335,13 +294,14 @@ const divy = coll => {
     return {
         bulletins_sent: x,
         new_topic_subscriptions: new_subscriptions,
-        allocated_new_subscriptions: ~~(new_subscriptions / x),
-        allocated_all_network: ~~(all_network / x),
-        allocated_direct: ~~(direct / x),
-        allocated_upload: ~~(upload / x),
-        allocated_overlay: ~~(overlay / x),
-        allocated_signup: ~~(signup / x),
-        allocated_other: ~~(other / x),
+        subscriptions: ~~(new_subscriptions / x),
+        deleted: -~~(deleted_subscriptions / x),
+        network: ~~(all_network / x),
+        direct: ~~(direct / x),
+        upload: ~~(upload / x),
+        overlay: ~~(overlay / x),
+        signup: ~~(signup / x),
+        other: ~~(other / x),
         ...rest,
     }
 }

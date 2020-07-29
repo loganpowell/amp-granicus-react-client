@@ -17,7 +17,7 @@ module.exports = {
                     lessOptions: {
                         modifyVars: {
                             // primary
-                            "@primary-color": "red",
+                            "@primary-color": "#e63946",
 
                             // layout
                             //"@layout-body-background": "@primary-color",

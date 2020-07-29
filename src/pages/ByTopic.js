@@ -1,7 +1,7 @@
 import React from "react"
 import { VegaLite } from "react-vega"
-import { punchcard, matrix3x3 } from "../viz_specs"
 import { Filter } from "../components"
+import { punchcard, matrix3x3 } from "../viz_specs"
 
 export const ByTopic = ({ data }) => {
     return (
@@ -22,11 +22,3 @@ export const ByTopic = ({ data }) => {
         </>
     )
 }
-
-//export const ByTopic = ({ data }) => {
-//    return (
-//        <div style={{ width: "100%" }}>
-//            <VegaLite data={{ data }} spec={punchcard} />
-//        </div>
-//    )
-//}

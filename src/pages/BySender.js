@@ -1,7 +1,7 @@
 import React from "react"
 import { VegaLite } from "react-vega"
-import { matrix3x3 } from "../viz_specs"
 import { Filter } from "../components"
+import { matrix_senders } from "../viz_specs"
 
 export const BySender = ({ data }) => {
     return (
@@ -14,7 +14,12 @@ export const BySender = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <VegaLite data={{ data }} spec={matrix3x3} />
+            <VegaLite
+                data={{ data }}
+                style={{ width: "85%" }}
+                spec={matrix_senders}
+            />
+            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
 }

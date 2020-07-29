@@ -71,7 +71,9 @@ const getLastKey = arr => {
 export const Filter = ({ selections }) => {
     const { parse, run$ } = useContext(CTX)
     const { URL_query, URL_path } = parse()
+
     let _fields = []
+
     Object.entries(URL_query).forEach(([k, v], idx) => {
         if (isArray(v)) {
             return v.forEach((member, _idx) =>
@@ -88,6 +90,7 @@ export const Filter = ({ selections }) => {
                 value: v,
             })
     })
+
     const [fields, setFields] = useState(_fields)
 
     const for_HURL = {

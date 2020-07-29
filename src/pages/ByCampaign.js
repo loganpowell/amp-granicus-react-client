@@ -2,10 +2,10 @@ import React, { useEffect, useContext } from "react"
 import { isPlainObject } from "@thi.ng/checks"
 import { VegaLite } from "react-vega"
 import * as K from "@-0/keys"
-import { matrix3x3 } from "../viz_specs"
 import { CTX } from "../context"
-import { log, flatten_listTopics } from "../utils/data"
+import { log } from "../utils/data"
 import { Filter } from "../components"
+import { matrix3x3 } from "../viz_specs"
 
 export const ByCampaign = ({ data }) => {
     return (

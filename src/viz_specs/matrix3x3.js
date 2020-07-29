@@ -1,7 +1,7 @@
 import {
-    tooltip_lg,
+    tooltip_bulletins,
     //date_range_filter
-} from "../utils/data"
+} from "./utils"
 
 export const matrix3x3 = {
     $schema: "https://vega.github.io/schema/vega-lite/v4.json",
@@ -60,7 +60,7 @@ export const matrix3x3 = {
             //tooltip: { field: "subject", type: "nominal" },
 
             // multi-field tooltip
-            tooltip: tooltip_lg,
+            tooltip: tooltip_bulletins,
             // scale not suited to `repeat`ed visualizations unless all the same range
             y: {
                 field: { repeat: "row" },
