@@ -21,6 +21,7 @@ export const Home = ({ data }) => {
                     limit: "limit",
                 }}
             />
+            {/* Home is an empty path = []:: [K.DOM_BODY]: { data: list } <- reassign object: */}
             <VegaLite data={{ data: data.data }} spec={facet_lines} />
         </>
     )
