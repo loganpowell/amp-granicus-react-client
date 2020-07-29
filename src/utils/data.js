@@ -247,13 +247,17 @@ export const augment = props => {
         opens_count,
         total_click_count,
         emails_delivered,
+        unsubscribes,
         subject = "",
         ...rest
     } = props
     const engagement_rate = (opens_count + total_click_count) / emails_delivered
     const subject_chars = subject.length
+    const unsubscribe_rate = unsubscribes / emails_delivered
     return {
         ...props,
+        unsubscribes,
+        unsubscribe_rate,
         engagement_rate,
         ...(subject_chars && { subject_chars }),
         ...rest,
@@ -270,6 +274,7 @@ export const diff = [
         const time_acc = new Date(created_at).getTime()
         const time_cur = new Date(created_at2).getTime()
         const days_gap = Math.abs((time_cur - time_acc) / (1000 * 3600 * 24))
+
         return {
             days_gap: isNaN(days_gap) ? null : days_gap > 30 ? 30 : ~~days_gap,
             created_at: created_at2,

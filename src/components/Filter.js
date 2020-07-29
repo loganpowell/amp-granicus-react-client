@@ -14,6 +14,7 @@ const { Option } = Select
 const createFilterStub = (fields, setFields, name) => {
     let complete = fields.filter(f => f.name !== "")
     let stub = fields.find(f => f.name === "")
+    //log({ stub, fields })
     stub.name = name
     //stub.key = name
     let updatedFields = [...complete, stub]
@@ -26,12 +27,12 @@ const filterSelects = options => (fields, setFields, field) => {
         <Select
             style={{ width: 120 }}
             value={field.name}
+            onClick={e => log({ target: e.target })}
             onSelect={value => {
                 //log({ value }) // FIXME
                 createFilterStub(fields, setFields, value)
             }}
         >
-            {" "}
             {Object.entries(options).map(([k, v], idx) => {
                 return (
                     <Option value={k} key={idx}>
@@ -96,7 +97,9 @@ export const Filter = ({ selections }) => {
     const for_HURL = {
         target: {
             href: `/${URL_path}?${fields
-                .map(f => `${f.name}=${f.value}`)
+                .flatMap(({ name, value }) =>
+                    name !== "" || value !== "" ? [`${name}=${value}`] : []
+                )
                 .join("&")}`,
         },
         currentTarget: document.body,
@@ -195,7 +198,13 @@ export const Filter = ({ selections }) => {
                     size='medium'
                     onClick={() => {
                         //log({ for_HURL })
-                        run$.next({ ...HURL, args: for_HURL })
+                        return fields.some(
+                            ({ name, value }) => name === "" || value === ""
+                        )
+                            ? message.warning(
+                                  "please complete empty filter first 😉"
+                              )
+                            : run$.next({ ...HURL, args: for_HURL })
                     }}
                 >
                     GO

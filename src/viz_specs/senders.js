@@ -11,7 +11,7 @@ export const matrix_senders = {
     },
     config: {
         bar: { width: 2 },
-        //axisY: { style: "" },
+        axisY: { maxExtent: 20 },
     },
     //resolve: { axis: { x: "independent", y: "independent" } },
     spec: {
@@ -27,19 +27,24 @@ export const matrix_senders = {
                 },
                 encoding: {
                     y: {
-                        field: "unsubscribes",
+                        field: "unsubscribe_rate",
                         type: "quantitative",
-                        //scale: {
-                        //    domain: [0, 500],
-                        //},
+                        scale: {
+                            domain: [0, 0.02],
+                        },
                     },
 
                     x: {
                         field: "created_at",
                         type: "temporal",
-                        //timeUnit: "yearweek",
+                        timeUnit: "yearmonth",
                     },
                     tooltip: tooltip_senders,
+                    //tooltip: [
+                    //    { field: "unsubscribe_rate", type: "quantitative" },
+                    //    { field: "created_at", type: "temporal" },
+                    //    { field: "subject", type: "nominal" },
+                    //],
                 },
             },
             {
@@ -53,9 +58,9 @@ export const matrix_senders = {
                     y: {
                         field: "engagement_rate",
                         type: "quantitative",
-                        //scale: {
-                        //    domain: [0, 1],
-                        //},
+                        scale: {
+                            domain: [0, 2],
+                        },
                     },
 
                     x: {
@@ -80,11 +85,11 @@ export const matrix_senders = {
                 },
                 encoding: {
                     y: {
-                        field: "opens_count",
+                        field: "percent_opened",
                         type: "quantitative",
-                        //scale: {
-                        //    domain: [0, 1],
-                        //},
+                        scale: {
+                            domain: [0, 100],
+                        },
                     },
 
                     x: {
@@ -92,11 +97,11 @@ export const matrix_senders = {
                         type: "temporal",
                         //timeUnit: "yearweek",
                     },
-                    //color: {
-                    //    field: "emails_delivered",
-                    //    scale: { scheme: "magma", type: "quantile" },
-                    //    sort: "descending", // invert the color scheme
-                    //},
+                    color: {
+                        field: "emails_delivered",
+                        scale: { scheme: "magma", type: "quantile" },
+                        sort: "descending", // invert the color scheme
+                    },
                     tooltip: tooltip_senders,
                 },
             },
@@ -111,9 +116,9 @@ export const matrix_senders = {
                     y: {
                         field: "click_rate",
                         type: "quantitative",
-                        //scale: {
-                        //    domain: [0, 1],
-                        //},
+                        scale: {
+                            domain: [0, 100],
+                        },
                     },
 
                     x: {
@@ -121,11 +126,11 @@ export const matrix_senders = {
                         type: "temporal",
                         //timeUnit: "yearweek",
                     },
-                    //color: {
-                    //    field: "emails_delivered",
-                    //    scale: { scheme: "magma", type: "quantile" },
-                    //    sort: "descending", // invert the color scheme
-                    //},
+                    color: {
+                        field: "emails_delivered",
+                        scale: { scheme: "magma", type: "quantile" },
+                        sort: "descending", // invert the color scheme
+                    },
                     tooltip: tooltip_senders,
                 },
             },
