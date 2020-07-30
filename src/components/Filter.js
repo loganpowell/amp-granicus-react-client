@@ -27,7 +27,7 @@ const filterSelects = options => (fields, setFields, field) => {
         <Select
             style={{ width: 120 }}
             value={field.name}
-            onClick={e => log({ target: e.target })}
+            //onClick={e => log({ target: e.target })}
             onSelect={value => {
                 //log({ value }) // FIXME
                 createFilterStub(fields, setFields, value)

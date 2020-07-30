@@ -1,7 +1,7 @@
 import React from "react"
 import { VegaLite } from "react-vega"
 import { Filter } from "../components"
-import { punchcard, matrix3x3 } from "../viz_specs"
+import { punchcard, matrix3x3, matrix_topics } from "../viz_specs"
 
 export const ByTopic = ({ data }) => {
     return (
@@ -17,8 +17,9 @@ export const ByTopic = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <VegaLite data={{ data }} spec={matrix3x3} />
+            <VegaLite data={{ data }} spec={matrix_topics} />
             {/*<VegaLite data={{ data }} spec={punchcard} />*/}
+            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
 }

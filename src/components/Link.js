@@ -27,7 +27,7 @@ export const ANT_HURL = registerCMD({
 
 // custom HURL function for ant.design menu component onClick handler
 export const antHURL = ({ item, key, keyPath, domEvent }) => {
-    log({ item, key, keyPath, domEvent })
+    //log({ item, key, keyPath, domEvent })
     domEvent.preventDefault()
     run$.next({ ...ANT_HURL, args: { key, domEvent } })
 }

@@ -39,11 +39,10 @@ export const tooltip_subs = [
 ]
 
 export const tooltip_senders = [
-    //{ field: "days_gap", type: "quantitative" },
     { field: "created_at", type: "temporal" },
     { field: "id", type: "nominal" },
     { field: "campaign_id", type: "nominal" },
-    //{ field: "sender_email", type: "nominal" },
+    { field: "sender_email", type: "nominal" },
     { field: "subject", type: "nominal" },
     //{ field: "delivery_status_name", type: "nominal" },
     //{ field: "addresses_count", type: "quantitative" },
@@ -68,6 +67,7 @@ export const tooltip_senders = [
     { field: "unsubscribe_rate", type: "quantitative" },
     { field: "engagement_rate", type: "quantitative" },
     { field: "subject_chars", type: "quantitative" },
+    { field: "days_gap", type: "quantitative" },
 ]
 /*
     "days_gap": null,
@@ -99,6 +99,70 @@ export const tooltip_senders = [
     "engagement_rate": 2,
     "subject_chars": 51
 */
+
+export const tooltip_topics = [
+    { field: "created_at", type: "temporal" },
+    { field: "topic_id", type: "nominal" },
+    { field: "campaign_id", type: "nominal" },
+    { field: "sender_email", type: "nominal" },
+    { field: "subject", type: "nominal" },
+    //{ field: "delivery_status_name", type: "nominal" },
+    //{ field: "addresses_count", type: "quantitative" },
+    //{ field: "success_count", type: "quantitative" },
+    //{ field: "failed_count", type: "quantitative" },
+    //{ field: "percent_success", type: "quantitative" },
+    //{ field: "immediate_email_recipients", type: "quantitative" },
+    { field: "emails_delivered", type: "quantitative" },
+    //{ field: "emails_failed", type: "quantitative" },
+    //{ field: "percent_emails_delivered", type: "quantitative" },
+    { field: "opens_count", type: "quantitative" },
+    { field: "percent_opened", type: "quantitative" },
+    { field: "nonunique_opens_count", type: "quantitative" },
+    { field: "links_count", type: "quantitative" },
+    { field: "click_rate", type: "quantitative" },
+    { field: "clicks_count", type: "quantitative" },
+    { field: "nonunique_clicks_count", type: "quantitative" },
+    //{ field: "digest_email_recipients", type: "quantitative" },
+    { field: "unique_click_count", type: "quantitative" },
+    { field: "total_click_count", type: "quantitative" },
+    { field: "unsubscribes", type: "quantitative" },
+    { field: "unsubscribe_rate", type: "quantitative" },
+    { field: "engagement_rate", type: "quantitative" },
+    { field: "subject_chars", type: "quantitative" },
+    { field: "days_gap", type: "quantitative" },
+]
+
+export const time_axis = {
+    //tickCount: 8,
+    labelAlign: "left",
+    labelExpr:
+        "[timeFormat(datum.value, '%b'), timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']",
+    labelOffset: 4,
+    labelPadding: -24,
+    tickSize: 30,
+    gridDash: {
+        condition: {
+            test: {
+                field: "value",
+                timeUnit: "month",
+                equal: 1,
+            },
+            value: [],
+        },
+        value: [2, 2],
+    },
+    tickDash: {
+        condition: {
+            test: {
+                field: "value",
+                timeUnit: "month",
+                equal: 1,
+            },
+            value: [],
+        },
+        value: [2, 2],
+    },
+}
 
 export const date_range_filter = (days = 360, past = 0) => {
     const nom = [

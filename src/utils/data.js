@@ -269,15 +269,15 @@ export const diff = [
     acc => acc,
     (acc, cur) => {
         //log({ acc, cur })
-        const { created_at } = acc
-        const { created_at: created_at2, ...rest } = cur
-        const time_acc = new Date(created_at).getTime()
-        const time_cur = new Date(created_at2).getTime()
+        const { created_at: c_a } = acc
+        const { created_at, ...rest } = cur
+        const time_acc = new Date(c_a).getTime()
+        const time_cur = new Date(created_at).getTime()
         const days_gap = Math.abs((time_cur - time_acc) / (1000 * 3600 * 24))
 
         return {
             days_gap: isNaN(days_gap) ? null : days_gap > 30 ? 30 : ~~days_gap,
-            created_at: created_at2,
+            created_at,
             ...rest,
         }
     },

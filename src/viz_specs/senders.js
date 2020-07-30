@@ -11,7 +11,7 @@ export const matrix_senders = {
     },
     config: {
         bar: { width: 2 },
-        axisY: { maxExtent: 20 },
+        //axisY: { maxExtent: 20 },
     },
     //resolve: { axis: { x: "independent", y: "independent" } },
     spec: {
