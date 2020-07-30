@@ -110,7 +110,7 @@ export const routerCfg = async url => {
                         [K.DOM_BODY]: { data: list },
                     }
                 },
-                [K.URL_PAGE]: "subs",
+                [K.URL_PAGE]: "subscriptions",
             },
         ],
         //
@@ -144,7 +144,7 @@ export const routerCfg = async url => {
                         [K.DOM_BODY]: list,
                     }
                 },
-                [K.URL_PAGE]: "campaign",
+                [K.URL_PAGE]: "campaigns",
             },
         ],
         //
@@ -174,7 +174,7 @@ export const routerCfg = async url => {
                         [K.DOM_BODY]: list,
                     }
                 },
-                [K.URL_PAGE]: "sender",
+                [K.URL_PAGE]: "senders",
             },
         ],
         //
@@ -215,7 +215,7 @@ export const routerCfg = async url => {
                         [K.DOM_BODY]: list,
                     }
                 },
-                [K.URL_PAGE]: "topic",
+                [K.URL_PAGE]: "topics",
             },
         ],
         //
@@ -296,8 +296,8 @@ export const View = () => {
 
     const RenderPage =
         {
-            sender: BySender,
-            subs: Home,
+            senders: BySender,
+            subscriptions: Home,
             test: (
                 <Filter
                     selections={{
@@ -308,14 +308,21 @@ export const View = () => {
                     }}
                 />
             ),
-            topic: ByTopic,
-            campaign: ByCampaign,
-        }[Page] || Home
+            topics: ByTopic,
+            campaigns: ByCampaign,
+        }[Page] ||
+        (() => (
+            <div className='spinner_container'>
+                <div className='spinner'>
+                    <Spin size='large' tip='fetching data...' />
+                </div>
+            </div>
+        ))
 
-    return loading || loading === undefined ? (
+    return loading ? (
         <div className='spinner_container'>
             <div className='spinner'>
-                <Spin size='large' />
+                <Spin size='large' tip={`fetching data..`} />
             </div>
         </div>
     ) : (
