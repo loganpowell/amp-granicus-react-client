@@ -32,7 +32,7 @@ export const matrix_topics = {
                         field: "unsubscribe_rate",
                         type: "quantitative",
                         scale: {
-                            domain: [0, 0.02],
+                            domain: [0, 1],
                         },
                     },
 
@@ -92,7 +92,7 @@ export const matrix_topics = {
                                 field: "click_rate",
                                 type: "quantitative",
                                 scale: {
-                                    domain: [0, 2],
+                                    domain: [0, 100],
                                 },
                             },
 
@@ -113,27 +113,38 @@ export const matrix_topics = {
             },
             {
                 mark: {
-                    type: "circle",
+                    type: "rect",
+                    tooltip: true,
+
+                    //type: "circle",
                     //clip: true,
-                    color: "black",
+                    //color: "black",
                     //xOffset: -2,
+                    //stroke: "transparent",
                 },
                 width: 300,
                 height: 200,
                 encoding: {
                     color: {
-                        field: "emails_delivered",
-                        type: "quantitative",
-                        scale: { scheme: "magma" }, //<- 🎨: https://vega.github.io/vega/docs/schemes/
-                        sort: "descending", // invert the color scheme
-                        aggregate: "median",
-                    },
-                    size: {
                         field: "engagement_rate",
                         type: "quantitative",
-                        aggregate: "median",
-                        scale: { domain: [0, 1] },
+                        scale: { scheme: "magma", domain: [0, 100] }, //<- 🎨: https://vega.github.io/vega/docs/schemes/
+                        sort: "descending", // invert the color scheme
+                        aggregate: "mean",
                     },
+                    //color: {
+                    //    field: "emails_delivered",
+                    //    type: "quantitative",
+                    //    scale: { scheme: "magma" }, //<- 🎨: https://vega.github.io/vega/docs/schemes/
+                    //    sort: "descending", // invert the color scheme
+                    //    aggregate: "sum",
+                    //},
+                    //size: {
+                    //    field: "engagement_rate",
+                    //    type: "quantitative",
+                    //    aggregate: "median",
+                    //    scale: { zero: false },
+                    //},
 
                     y: {
                         field: "created_at",
@@ -141,6 +152,7 @@ export const matrix_topics = {
                         timeUnit: "day",
                         sort: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
                         axis: { title: "day of week" },
+                        //bin: { maxbins: 7 },
                         scale: {
                             domain: [
                                 "mon",
@@ -156,13 +168,42 @@ export const matrix_topics = {
                     x: {
                         field: "created_at",
                         type: "ordinal",
+                        //bin: { maxbins: 24 },
+
                         timeUnit: "hours",
                         axis: {
-                            title: "time sent (ET: 24hr)",
+                            title: "time sent (24hr ET)",
                             format: "%H", // { labels: "%H" },
                         },
+                        scale: {
+                            domain: [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11,
+                                12,
+                                13,
+                                14,
+                                15,
+                                16,
+                                17,
+                                18,
+                                19,
+                                20,
+                                21,
+                                22,
+                                23,
+                                24,
+                            ],
+                        },
                     },
-                    tooltip: tooltip_topics,
                 },
             },
         ],

@@ -110,7 +110,7 @@ export const tooltip_topics = [
     //{ field: "addresses_count", type: "quantitative" },
     //{ field: "success_count", type: "quantitative" },
     //{ field: "failed_count", type: "quantitative" },
-    //{ field: "percent_success", type: "quantitative" },
+    { field: "percent_success", type: "quantitative" },
     //{ field: "immediate_email_recipients", type: "quantitative" },
     { field: "emails_delivered", type: "quantitative" },
     //{ field: "emails_failed", type: "quantitative" },

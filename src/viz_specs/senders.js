@@ -1,4 +1,4 @@
-import { tooltip_senders } from "./utils"
+import { tooltip_senders, time_axis } from "./utils"
 
 export const matrix_senders = {
     $schema: "https://vega.github.io/schema/vega-lite/v4.json",
@@ -10,8 +10,10 @@ export const matrix_senders = {
         row: { field: "sender_email", type: "nominal" },
     },
     config: {
+        //lineBreak: ":",
         bar: { width: 2 },
         //axisY: { maxExtent: 20 },
+        axisTemporal: time_axis,
     },
     //resolve: { axis: { x: "independent", y: "independent" } },
     spec: {
@@ -30,7 +32,7 @@ export const matrix_senders = {
                         field: "unsubscribe_rate",
                         type: "quantitative",
                         scale: {
-                            domain: [0, 0.02],
+                            domain: [0, 2],
                         },
                     },
 
@@ -47,35 +49,35 @@ export const matrix_senders = {
                     //],
                 },
             },
-            {
-                mark: {
-                    type: "bar",
-                    clip: true,
-                    //color: "#00a8e8",
-                    //xOffset: -2,
-                },
-                encoding: {
-                    y: {
-                        field: "engagement_rate",
-                        type: "quantitative",
-                        scale: {
-                            domain: [0, 2],
-                        },
-                    },
+            //{
+            //    mark: {
+            //        type: "bar",
+            //        clip: true,
+            //        //color: "#00a8e8",
+            //        //xOffset: -2,
+            //    },
+            //    encoding: {
+            //        y: {
+            //            field: "engagement_rate",
+            //            type: "quantitative",
+            //            scale: {
+            //                domain: [0, 100],
+            //            },
+            //        },
 
-                    x: {
-                        field: "created_at",
-                        type: "temporal",
-                        //timeUnit: "yearweek",
-                    },
-                    color: {
-                        field: "emails_delivered",
-                        scale: { scheme: "magma", type: "quantile" },
-                        sort: "descending", // invert the color scheme
-                    },
-                    tooltip: tooltip_senders,
-                },
-            },
+            //        x: {
+            //            field: "created_at",
+            //            type: "temporal",
+            //            //timeUnit: "yearweek",
+            //        },
+            //        color: {
+            //            field: "emails_delivered",
+            //            scale: { scheme: "magma", type: "quantile" },
+            //            sort: "descending", // invert the color scheme
+            //        },
+            //        tooltip: tooltip_senders,
+            //    },
+            //},
             {
                 mark: {
                     type: "bar",

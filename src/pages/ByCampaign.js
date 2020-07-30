@@ -5,7 +5,7 @@ import * as K from "@-0/keys"
 import { CTX } from "../context"
 import { log } from "../utils/data"
 import { Filter } from "../components"
-import { matrix3x3 } from "../viz_specs"
+import { matrix3x3, matrix_campaign } from "../viz_specs"
 
 export const ByCampaign = ({ data }) => {
     return (
@@ -18,7 +18,8 @@ export const ByCampaign = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <VegaLite data={{ data }} spec={matrix3x3} />
+            <VegaLite data={{ data }} spec={matrix_campaign} />
+            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
 }

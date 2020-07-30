@@ -251,9 +251,10 @@ export const augment = props => {
         subject = "",
         ...rest
     } = props
-    const engagement_rate = (opens_count + total_click_count) / emails_delivered
+    const engagement_rate =
+        ((opens_count + total_click_count) / emails_delivered) * 100
     const subject_chars = subject.length
-    const unsubscribe_rate = unsubscribes / emails_delivered
+    const unsubscribe_rate = (unsubscribes / emails_delivered) * 100
     return {
         ...props,
         unsubscribes,
