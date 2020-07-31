@@ -17,6 +17,7 @@ export const matrix_campaign = {
     facet: {
         row: {
             sort: {
+                // 🚀 : https://github.com/vega/vega-lite/pull/3854#issuecomment-394954455
                 op: "median",
                 field: "engagement_rate",
                 order: "descending",
@@ -140,22 +141,55 @@ export const matrix_campaign = {
                 width: 800,
                 layer: [
                     {
-                        mark: { type: "rect", color: "#eee", tooltip: true },
+                        mark: {
+                            type: "rect",
+                            color: "#eee",
+                            tooltip: true,
+                            clip: true,
+                        },
 
                         encoding: {
-                            x: { field: "percent_success", aggregate: "mean" },
+                            x: {
+                                field: "percent_success",
+                                aggregate: "mean",
+                                scale: {
+                                    domain: [0, 100],
+                                },
+                            },
                         },
                     },
                     {
-                        mark: { type: "rect", color: "#ddd", tooltip: true },
+                        mark: {
+                            type: "rect",
+                            color: "#ddd",
+                            tooltip: true,
+                            clip: true,
+                        },
                         encoding: {
-                            x: { field: "percent_opened", aggregate: "mean" },
+                            x: {
+                                field: "percent_opened",
+                                aggregate: "mean",
+                                scale: {
+                                    domain: [0, 100],
+                                },
+                            },
                         },
                     },
                     {
-                        mark: { type: "rect", color: "#ccc", tooltip: true },
+                        mark: {
+                            type: "rect",
+                            color: "#ccc",
+                            tooltip: true,
+                            clip: true,
+                        },
                         encoding: {
-                            x: { field: "click_rate", aggregate: "mean" },
+                            x: {
+                                field: "click_rate",
+                                aggregate: "mean",
+                                scale: {
+                                    domain: [0, 100],
+                                },
+                            },
                         },
                     },
                     {
@@ -163,9 +197,16 @@ export const matrix_campaign = {
                             type: "tick",
                             color: "#e63946",
                             tooltip: true,
+                            clip: true,
                         },
                         encoding: {
-                            x: { field: "engagement_rate", aggregate: "mean" },
+                            x: {
+                                field: "engagement_rate",
+                                aggregate: "mean",
+                                scale: {
+                                    domain: [0, 100],
+                                },
+                            },
                         },
                     },
                 ],
