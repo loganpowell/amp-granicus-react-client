@@ -6,14 +6,6 @@ export const matrix_campaign = {
     data: {
         name: "data",
     },
-    //transform: [
-    //    {
-    //        joinaggregate: [
-    //            { op: "median", field: "engagement_rate", as: "Engagement" },
-    //        ],
-    //        //"groupby": ["Origin"]
-    //    },
-    //],
     facet: {
         row: {
             sort: {
@@ -44,99 +36,6 @@ export const matrix_campaign = {
         width: "container",
 
         hconcat: [
-            /*
-            {
-                mark: {
-                    type: "bar",
-                    clip: true,
-                    color: "#e63946",
-                    //xOffset: -2,
-                },
-                encoding: {
-                    y: {
-                        field: "unsubscribe_rate",
-                        type: "quantitative",
-                        scale: {
-                            domain: [0, 0.02],
-                        },
-                    },
-
-                    x: {
-                        field: "created_at",
-                        type: "temporal",
-                        //timeUnit: "yearweek",
-                    },
-                    tooltip: tooltip_topics,
-                    //tooltip: [
-                    //    { field: "unsubscribe_rate", type: "quantitative" },
-                    //    { field: "created_at", type: "temporal" },
-                    //    { field: "subject", type: "nominal" },
-                    //],
-                },
-            },
-
-            {
-                layer: [
-                    {
-                        mark: {
-                            type: "bar",
-                            clip: true,
-                            color: "#00a8e8",
-                            //xOffset: -2,
-                        },
-                        encoding: {
-                            y: {
-                                field: "percent_opened",
-                                type: "quantitative",
-                                scale: {
-                                    domain: [0, 100],
-                                },
-                            },
-
-                            x: {
-                                field: "created_at",
-                                type: "temporal",
-                            },
-                            //color: {
-                            //    field: "emails_delivered",
-                            //    scale: { scheme: "magma", type: "quantile" },
-                            //    sort: "descending", // invert the color scheme
-                            //},
-                            tooltip: tooltip_topics,
-                        },
-                    },
-                    {
-                        mark: {
-                            type: "bar",
-                            clip: true,
-                            color: "#003459",
-                            //xOffset: -2,
-                        },
-                        encoding: {
-                            y: {
-                                field: "click_rate",
-                                type: "quantitative",
-                                scale: {
-                                    domain: [0, 100],
-                                },
-                            },
-
-                            x: {
-                                field: "created_at",
-                                type: "temporal",
-                                //timeUnit: "yearweek",
-                            },
-                            //color: {
-                            //    field: "emails_delivered",
-                            //    scale: { scheme: "magma", type: "quantile" },
-                            //    sort: "descending", // invert the color scheme
-                            //},
-                            tooltip: tooltip_topics,
-                        },
-                    },
-                ],
-            },
-            */
             {
                 width: 800,
                 layer: [
