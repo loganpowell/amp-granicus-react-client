@@ -1,64 +1,11 @@
 //import { getIn, setIn } from "@thi.ng/paths"
 import { isPlainObject, isArray } from "@thi.ng/checks"
 import { map, transduce, comp, push, scan } from "@thi.ng/transducers"
+import { getIn } from "@thi.ng/paths"
 
 export const log = console.log
 export const json = arg => JSON.stringify(arg, null, 2)
 export const JL = arg => log(json(arg))
-
-// TODO -> make more generalized (across queries)
-const flatten_listTopics = listTopics =>
-    listTopics.reduce((a, c, i) => {
-        const { id, code, name, bulletins } = c
-        const { items } = bulletins
-        const byDate = (prev, curr) =>
-            new Date(prev.created_at).getTime() -
-            new Date(curr.created_at).getTime()
-        const nested = items.sort(byDate).reduce((acc, cur, idx) => {
-            const { bulletin_id, topic_id, created_at, bulletin } = cur
-            const { campaign_id, detail, sender_email } = bulletin
-            const {
-                subject,
-                emails_delivered,
-                unsubscribes,
-                unique_click_count,
-                total_click_count,
-                opens_count,
-                percent_opened,
-            } = detail
-            const subject_length = subject.length
-
-            const days_gap = !acc.length
-                ? 300 // if first date on record for topic, assign to 300 days
-                : (new Date(created_at).getTime() -
-                      new Date(acc[acc.length - 1]["created_at"]).getTime()) /
-                  (1000 * 3600 * 24)
-            const click_rate = total_click_count / emails_delivered
-            const engagement_rate =
-                (opens_count + total_click_count) / emails_delivered
-            return acc.concat({
-                topic_id,
-                topic_code: code,
-                topic_name: name,
-                bulletin_id,
-                sender_email,
-                created_at,
-                days_gap, // : days_gap > days_gap_max ? days_gap_max : days_gap, // handle with clip
-                campaign_id,
-                subject,
-                subject_length, // : subject_length > 150 ? 150 : subject_length,
-                emails_delivered,
-                unsubscribes,
-                unique_click_count,
-                total_click_count,
-                opens_count,
-                percent_opened,
-                click_rate, // click_rate > .2 ? .2 : click_rate,
-                engagement_rate,
-            })
-        }, [])
-        return a.concat(nested)
-    }, [])
 
 export const isEmpty = coll => {
     return isPlainObject(coll) && !Object.keys(coll).length
@@ -251,8 +198,10 @@ export const augment = props => {
         subject = "",
         ...rest
     } = props
-    const engagement_rate =
-        ((opens_count + total_click_count) / emails_delivered) * 100
+    const engagement_rate = ~~(
+        ((opens_count + total_click_count) / emails_delivered) *
+        100
+    )
     const subject_chars = subject.length
     const unsubscribe_rate = (unsubscribes / emails_delivered) * 100
     return {
@@ -345,3 +294,168 @@ __proto__: Object
 //    { created_at: "2018-05-10T13:14:15.000Z" },
 //    { created_at: "2013-10-24T13:02:00.000Z" }
 //) //?
+
+/**
+ * @example
+ * let test = [{a:1, b:2, c:3}, {a:2, b:5, c:9}, {a:1, b:4, c:6}]
+ *
+ * collect_by_path(["a"], test) //?
+ *
+ * { 1: [{a:1, b:2, c:3}, {a:1, b:4, c:6}], 2: [{a:2, b:5, c:9}] }
+ */
+export const collect_by_path = (path = [], entries = []) => {
+    let collection = {}
+    entries.forEach(entry => {
+        const prop = getIn(entry, path)
+        if (collection[prop]) {
+            return collection[prop].push(entry)
+        }
+        return (collection[prop] = [entry])
+    })
+    return collection
+}
+
+/**
+ * @example
+ * let test = [{a:1, b:2, c:3}, {a:2, b:5, c:9}, {a:1, b:4, c:6}]
+ *
+ * aggregate_by_key(test) //?
+ *
+ * { a: [ 1, 2, 1 ], b: [ 2, 5, 4 ], c: [ 3, 9, 6 ] }
+ */
+export const aggregate_by_key = (reports = []) => {
+    let aggregates = {}
+    reports.forEach(report => {
+        Object.entries(report).forEach(([k, v]) => {
+            if (aggregates[k]) {
+                return aggregates[k].push(v)
+            }
+            return (aggregates[k] = [v])
+        })
+    })
+    return aggregates
+}
+
+/**
+ * @example
+ * let test = [{a:1, b:2, c:3}, {a:2, b:5, c:9}, {a:1, b:4, c:6}]
+ *
+ * coll_by_path_aggregate(["a"], test) //?
+ *
+ * {
+ *  1: {
+ *      aggregate:{a:[1,1], b:[2,4], c:[3,6]},
+ *      reports:[{a:1, b:2, c:3}, {a:1, b:4, c:6}]
+ *  },
+ *  2: {
+ *      aggregate:{a:[2], b:[5], c:[9]},
+ *      reports:[{a:2, b:5, c:9}]
+ *  }
+ * }
+ */
+export const coll_by_path_aggregate = (path = [], entries = []) => {
+    let coll = collect_by_path(path, entries)
+    return Object.entries(coll).reduce((a, c, i, d) => {
+        let [sender, reports] = c
+        a[sender] = { aggregate: aggregate_by_key(reports), reports }
+        return a
+    }, {})
+}
+
+/**
+ * @example
+ * let ex = { a: [ 1, 2, 1 ], b: [ 2, 5, 4 ], c: [ 3, 9, 6 ] }
+ * apply_kv_ops({a: [(a, c, i, d) => a + c, 0], b: [(a, c, i, d) => (a.push(c), a), []]})(ex) //?
+ * { a: 4, b: [2, 5, 4] }
+ */
+export const apply_kv_ops = (key_reduction_map = {}) => (aggregate = {}) => {
+    return Object.entries(aggregate).reduce((a, c, i, d) => {
+        let [_key, arr] = c
+        if (key_reduction_map[_key]) {
+            a[_key] = arr.reduce(...key_reduction_map[_key])
+        }
+        return a
+    }, {})
+}
+
+/**
+ * @example
+ * let test = [
+ *   {
+ *       sender_email: "test1@some.com",
+ *       success_count: 100,
+ *       percent_opened: 2,
+ *       click_rate: 4,
+ *       unsubscribe_rate: 1,
+ *   },
+ *   {
+ *       sender_email: "test1@some.com",
+ *       success_count: 200,
+ *       percent_opened: 4,
+ *       click_rate: 6,
+ *       unsubscribe_rate: 2,
+ *   },
+ *   {
+ *       sender_email: "test3@some.com",
+ *       success_count: 300,
+ *       percent_opened: 6,
+ *       click_rate: 8,
+ *       unsubscribe_rate: 3,
+ *   },
+ * ]
+ *
+ * coll_aggregator_sender(test) //?
+ *
+ * { 'test1@some.com':
+ *   { reports: [ [Object], [Object] ],
+ *     summary:
+ *      { success_count: 300,
+ *        percent_opened: 3,
+ *        click_rate: 5,
+ *        unsubscribe_rate: 1.5 } },
+ *  'test3@some.com':
+ *   { reports: [ [Object] ],
+ *     summary:
+ *      { success_count: 300,
+ *        percent_opened: 6,
+ *        click_rate: 8,
+ *        unsubscribe_rate: 3 } } }
+ *
+ */
+export const coll_aggregator_sender = data => {
+    const collection = coll_by_path_aggregate(["sender_email"], data)
+    const avgr = [(a, c, i, { length }) => ~~((a + c / length) * 100) / 100, 0]
+    const sumr = [(a, c, i, d) => a + c, 0]
+
+    let out = {}
+
+    Object.entries(collection).forEach(([sender, metrics]) => {
+        out[sender] = {
+            summary: apply_kv_ops({
+                success_count: sumr,
+                percent_emails_delivered: avgr,
+                percent_opened: avgr,
+                click_rate: avgr,
+                engagement_rate: avgr,
+                unsubscribe_rate: avgr,
+            })(metrics["aggregate"]),
+            reports: metrics["reports"],
+        }
+    })
+    return out
+}
+
+export const metric_name = k =>
+    k === "success_count"
+        ? "Succeeded (#)"
+        : k === "percent_emails_delivered"
+        ? "Delivered (%)"
+        : k === "percent_opened"
+        ? "Opened (%)"
+        : k === "click_rate"
+        ? "Clicked (%)"
+        : k === "unsubscribe_rate"
+        ? "Deleted (%)"
+        : k === "engagement_rate"
+        ? "Engaged (%)"
+        : ""

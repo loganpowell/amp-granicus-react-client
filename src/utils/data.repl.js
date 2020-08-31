@@ -2,8 +2,15 @@ import { getIn, setIn } from "@thi.ng/paths"
 import { isPlainObject, isArray, isPrimitive } from "@thi.ng/checks"
 import { log } from "../utils"
 import { map, transduce, comp, push } from "@thi.ng/transducers"
-import { tbs, LT, LB } from "../data"
-import { squash } from "./data"
+import { tbs, LT, LB, bySender } from "../data"
+import {
+    squash,
+    collect_by_path,
+    aggregate_by_key,
+    coll_by_path_aggregate,
+    apply_kv_ops,
+    coll_aggregator_sender,
+} from "./data"
 import { isObject } from "vega"
 
 //unnest(tbs.data.listTopics.items, ["id"], ["bulletins", "items"]) //?
@@ -114,4 +121,52 @@ const xf_smash = comp(
 )
 
 export const smash = coll => transduce(xf_smash, push(), coll)
-smash(LB.data.listCampaigns.items) //?
+//smash(LB.data.listCampaigns.items) //?
+
+let coll = collect_by_path(["sender_email"], bySender)
+
+let aggr = aggregate_by_key([
+    { a: 1, b: 2, c: 3 },
+    { a: 2, b: 5, c: 9 },
+    { a: 1, b: 4, c: 6 },
+]) //?
+
+Object.entries(coll).reduce((a, c, i, d) => {
+    let [sender, reports] = c
+    a[sender] = aggregate_by_key(reports)
+    return a
+}, {})
+
+let prep = coll_by_path_aggregate(["sender_email"], bySender)
+
+//JSON.stringify(prep, null, 4) //?
+
+apply_kv_ops({
+    a: [(a, c, i, d) => a + c, 0],
+    b: [(a, c, i, d) => (a.push(c), a), []],
+})(aggr) //?
+
+let test = [
+    {
+        sender_email: "test1@some.com",
+        success_count: 100,
+        percent_opened: 2,
+        click_rate: 4,
+        unsubscribe_rate: 1,
+    },
+    {
+        sender_email: "test1@some.com",
+        success_count: 200,
+        percent_opened: 4,
+        click_rate: 6,
+        unsubscribe_rate: 2,
+    },
+    {
+        sender_email: "test3@some.com",
+        success_count: 300,
+        percent_opened: 6,
+        click_rate: 8,
+        unsubscribe_rate: 3,
+    },
+]
+coll_aggregator_sender(test) //?

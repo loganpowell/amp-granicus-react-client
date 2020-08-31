@@ -1,5 +1,6 @@
 const CracoLessPlugin = require("craco-less")
 const { ESLINT_MODES } = require("@craco/craco")
+import { primary_color } from "./src/colors"
 
 module.exports = {
     eslint: {
@@ -17,7 +18,7 @@ module.exports = {
                     lessOptions: {
                         modifyVars: {
                             // primary
-                            "@primary-color": "#e63946",
+                            "@primary-color": primary_color,
 
                             // layout
                             //"@layout-body-background": "@primary-color",
