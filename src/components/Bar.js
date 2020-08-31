@@ -16,10 +16,7 @@ const xform_bar = summary => {
     const xf = Object.entries(summary).reduce((a, c, i, d) => {
         const [k, v] = c
         const isPercent = k => metric_name(k).split("#").length === 1
-        if (
-            !isPercent(k)
-            //&& k !== "success_count" && k !== "impressions"
-        ) {
+        if (!isPercent(k) && k !== "success_count" && k !== "impressions") {
             a.push({
                 id: metric_name(k),
                 label: metric_name(k),

@@ -205,13 +205,14 @@ export const augment = props => {
     )
     const subject_chars = subject.length
     const unsubscribe_rate = (unsubscribes / emails_delivered) * 100
-    const impressions = total_click_count + opens_count
+    const impressions = total_click_count + nonunique_opens_count
     return {
         ...props,
         unsubscribes,
         unsubscribe_rate,
         engagement_rate,
         impressions,
+        avg_impressions: impressions,
         opens_count: nonunique_opens_count,
         unique_opens_count: opens_count,
 
@@ -444,12 +445,13 @@ export const coll_aggregator_sender = data => {
                 engagement_rate: avg,
                 unsubscribe_rate: avg,
                 impressions: sum,
-                address_count: avg,
+                addresses_count: avg,
                 emails_delivered: avg,
                 opens_count: avg,
                 unique_opens_count: avg,
                 nonunique_clicks_count: avg,
                 unique_click_count: avg,
+                avg_impressions: avg,
             })(metrics["aggregate"]),
             reports: metrics["reports"],
         }
@@ -472,7 +474,7 @@ export const metric_name = k =>
         ? "Engaged (%)"
         : k === "impressions"
         ? "Impressions (#)"
-        : k === "address_count"
+        : k === "addresses_count"
         ? "Sent (#)"
         : k === "emails_delivered"
         ? "Delivered (#)"
@@ -484,4 +486,6 @@ export const metric_name = k =>
         ? "Clicks (#)"
         : k === "unique_click_count"
         ? "Unique Clicks (#)"
+        : k === "avg_impressions"
+        ? "Impressions (#)"
         : "(#)"
