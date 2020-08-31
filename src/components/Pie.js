@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { ResponsivePie } from "@nivo/pie"
-import { Menu, Dropdown, Button, Select } from "antd"
-import { DownOutlined } from "@ant-design/icons"
+import { Menu, Dropdown, Button, Select, Tooltip } from "antd"
+import { InfoCircleOutlined } from "@ant-design/icons"
 
 import { primary_color, muted_color } from "../colors"
 import { metric_name } from "../utils"
@@ -9,8 +9,9 @@ import { metric_name } from "../utils"
 export const Pie = ({ data }) => (
     <ResponsivePie
         data={data}
-        //margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         innerRadius={0.7}
+        startAngle={-180}
         padAngle={2}
         cornerRadius={3}
         colors={d => d.color}
@@ -30,7 +31,7 @@ export const Pie = ({ data }) => (
     />
 )
 
-const xform_summary = summary => {
+const xform_pie = summary => {
     //const {
     //    success_count,
     //    percent_emails_delivered,
@@ -39,10 +40,10 @@ const xform_summary = summary => {
     //    unsubscribe_rate,
     //    engagement_rate,
     //} = summary
-
-    const xformed = Object.entries(summary).reduce((a, c, i, d) => {
+    const xf = Object.entries(summary).reduce((a, c, i, d) => {
         const [k, v] = c
-        if (k !== "success_count") {
+        const isPercent = k => metric_name(k).split("#").length === 1
+        if (isPercent(k)) {
             a[k] = [
                 {
                     id: k,
@@ -61,14 +62,13 @@ const xform_summary = summary => {
         return a
     }, {})
 
-    return xformed
+    return xf
 }
 
-const { Item } = Menu
 const { Option } = Select
 
 export const SelectPie = ({ summary }) => {
-    const xformed = xform_summary(summary)
+    const xformed = xform_pie(summary)
 
     const [selection, setSelection] = useState(
         xformed["percent_emails_delivered"]
@@ -76,19 +76,31 @@ export const SelectPie = ({ summary }) => {
 
     const select = e => {
         setSelection(xformed[e])
-        console.log({ e })
+        //console.log({ e })
     }
 
     return (
         <>
-            <Select defaultValue='percent_emails_delivered' onChange={select}>
+            <Select
+                defaultValue='percent_emails_delivered'
+                onChange={select}
+                style={{ marginBottom: "1rem" }}
+            >
                 {Object.entries(xformed).map(([k, v], i) => (
                     <Option value={k} key={i}>
                         {metric_name(k)}
                     </Option>
                 ))}
             </Select>
-            <Pie data={selection} />
+            <Tooltip
+                placement='topLeft'
+                title='Average from time period selected'
+            >
+                <InfoCircleOutlined style={{ marginLeft: "1rem" }} />
+            </Tooltip>
+            <div style={{ height: "75%" }}>
+                <Pie data={selection} />
+            </div>
         </>
     )
 }

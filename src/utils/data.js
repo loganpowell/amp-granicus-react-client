@@ -118,8 +118,8 @@ export const prune = (coll, sep = "/", acc = {}) => {
     "nonunique_opens_count": 954,
     "links_count": 17,
     "click_rate": 2.6885141584473433,
-    "clicks_count": 169,
-    "nonunique_clicks_count": 189,
+    "nonunique_clicks_count": 169,
+    "nonunique_nonunique_clicks_count": 189,
     "digest_email_recipients": 0,
     "unique_click_count": 164,
     "total_click_count": 189,
@@ -192,6 +192,7 @@ const sendcheckit_reponse = {
 export const augment = props => {
     const {
         opens_count,
+        nonunique_opens_count,
         total_click_count,
         emails_delivered,
         unsubscribes,
@@ -204,11 +205,16 @@ export const augment = props => {
     )
     const subject_chars = subject.length
     const unsubscribe_rate = (unsubscribes / emails_delivered) * 100
+    const impressions = total_click_count + opens_count
     return {
         ...props,
         unsubscribes,
         unsubscribe_rate,
         engagement_rate,
+        impressions,
+        opens_count: nonunique_opens_count,
+        unique_opens_count: opens_count,
+
         ...(subject_chars && { subject_chars }),
         ...rest,
     }
@@ -420,24 +426,30 @@ export const apply_kv_ops = (key_reduction_map = {}) => (aggregate = {}) => {
  *        percent_opened: 6,
  *        click_rate: 8,
  *        unsubscribe_rate: 3 } } }
- *
  */
 export const coll_aggregator_sender = data => {
     const collection = coll_by_path_aggregate(["sender_email"], data)
-    const avgr = [(a, c, i, { length }) => ~~((a + c / length) * 100) / 100, 0]
-    const sumr = [(a, c, i, d) => a + c, 0]
+    const avg = [(a, c, i, { length }) => ~~((a + c / length) * 100) / 100, 0]
+    const sum = [(a, c, i, d) => a + c, 0]
 
     let out = {}
 
     Object.entries(collection).forEach(([sender, metrics]) => {
         out[sender] = {
             summary: apply_kv_ops({
-                success_count: sumr,
-                percent_emails_delivered: avgr,
-                percent_opened: avgr,
-                click_rate: avgr,
-                engagement_rate: avgr,
-                unsubscribe_rate: avgr,
+                success_count: sum,
+                percent_emails_delivered: avg,
+                percent_opened: avg,
+                click_rate: avg,
+                engagement_rate: avg,
+                unsubscribe_rate: avg,
+                impressions: sum,
+                address_count: avg,
+                emails_delivered: avg,
+                opens_count: avg,
+                unique_opens_count: avg,
+                nonunique_clicks_count: avg,
+                unique_click_count: avg,
             })(metrics["aggregate"]),
             reports: metrics["reports"],
         }
@@ -458,4 +470,18 @@ export const metric_name = k =>
         ? "Deleted (%)"
         : k === "engagement_rate"
         ? "Engaged (%)"
-        : ""
+        : k === "impressions"
+        ? "Impressions (#)"
+        : k === "address_count"
+        ? "Sent (#)"
+        : k === "emails_delivered"
+        ? "Delivered (#)"
+        : k === "opens_count"
+        ? "Opens (#)"
+        : k === "unique_opens_count"
+        ? "Unique Opens (#)"
+        : k === "nonunique_clicks_count"
+        ? "Clicks (#)"
+        : k === "unique_click_count"
+        ? "Unique Clicks (#)"
+        : "(#)"

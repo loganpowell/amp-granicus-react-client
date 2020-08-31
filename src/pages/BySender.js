@@ -1,8 +1,8 @@
 import React from "react"
-import { Card, Table } from "antd"
+import { Card, Table, Tooltip } from "antd"
 
 import { primary_color } from "../colors"
-import { Filter, Pie, SelectPie } from "../components"
+import { Filter, SelectPie, Bar } from "../components"
 import { coll_aggregator_sender, log, metric_name } from "../utils"
 
 //import { VegaLite } from "react-vega"
@@ -27,58 +27,95 @@ export const BySender = ({ data }) => {
             />*/}
             {Object.entries(xformed).map(([sender, metrics], idx) => {
                 const { summary, reports } = metrics
-                const {
-                    success_count,
-                    percent_emails_delivered,
-                    percent_opened,
-                    click_rate,
-                    unsubscribe_rate,
-                    engagement_rate,
-                } = summary
-                // first: summary table
 
-                const datasource = Object.entries(summary).reduce(
+                // metrics table
+                const datasource_metrics = Object.entries(summary).reduce(
                     (a, c, i, d) => {
                         const [k, v] = c
-                        a.push({
-                            key: i,
-                            metric: metric_name(k),
-                            value: v,
-                        })
+                        if (
+                            metric_name(k).split("#").length === 1 ||
+                            k === "success_count" ||
+                            k === "impressions"
+                            //&&
+                        ) {
+                            a.push({
+                                key: i,
+                                metric: metric_name(k),
+                                value: v,
+                            })
+                        }
                         return a
                     },
                     []
                 )
-                const columns = [
+                const metric_columns = [
                     {
                         title: "Metric",
                         dataIndex: "metric",
-                        responsive: ["md"],
                     },
                     { title: "Value", dataIndex: "value", responsive: ["md"] },
                 ]
                 const grid_style = {
                     width: "24%",
                     textAlign: "center",
-                    height: "20rem",
+                    height: "22rem",
                     border: "none",
+                    padding: "1rem",
                 }
-                // second: donut chart
-                const pie_data = [
+
+                // bulletin table
+                const data_bulletins = reports.map((report, key) => ({
+                    key,
+                    name: report.subject,
+                    date: new Date(report.created_at).toLocaleDateString(),
+                }))
+                const bulletin_columns = [
                     {
-                        id: "percent_opened",
-                        label: "Percent Opened",
-                        value: percent_opened,
-                        color: primary_color,
+                        title: "Bulletin Name",
+                        dataIndex: "name",
+                        key: "name",
+                        //responsive: ["md"],
+                        ellipsis: { showTitle: false },
+                        render: name => {
+                            const match = reports.find(
+                                report => report.subject === name
+                            )
+                            const id = match["id"]
+                            return (
+                                <Tooltip
+                                    placement='topLeft'
+                                    //title={JSON.stringify(match, null, 2)}
+                                    title={name}
+                                >
+                                    <a
+                                        href={
+                                            "https://admin.govdelivery.com/reports/bulletin_details/" +
+                                            id
+                                        }
+                                    >
+                                        {name}
+                                    </a>
+                                </Tooltip>
+                            )
+                        },
                     },
                     {
-                        id: "percent_unopened",
-                        label: "Percent Unopened",
-                        value: 100 - percent_opened,
-                        color: "#F0F2F5",
+                        title: "Date",
+                        dataIndex: "date",
+                        key: "date",
                     },
                 ]
-                //log({ percent_opened })
+
+                const Heading = ({ children }) => (
+                    <h3
+                        style={{
+                            marginBottom: "1rem",
+                            textAlign: "center",
+                        }}
+                    >
+                        {children}
+                    </h3>
+                )
                 return (
                     <Card
                         title={sender}
@@ -87,18 +124,35 @@ export const BySender = ({ data }) => {
                     >
                         <Card.Grid style={grid_style}>
                             <Table
-                                dataSource={datasource}
-                                columns={columns}
+                                dataSource={datasource_metrics}
+                                columns={metric_columns}
                                 size='small'
                                 pagination={false}
                             />
                         </Card.Grid>
                         <Card.Grid style={grid_style}>
+                            <Heading>KPIs on Average by Rate</Heading>
                             <SelectPie summary={summary} />
-                            {/*<Pie data={pie_data} />*/}
+                        </Card.Grid>
+                        <Card.Grid style={grid_style}>
+                            <Heading>KPIs on Average by Count</Heading>
+                            <Bar summary={summary} />
+                        </Card.Grid>
+                        <Card.Grid style={grid_style}>
+                            <Table
+                                dataSource={data_bulletins}
+                                columns={bulletin_columns}
+                                size='small'
+                                pagination={{
+                                    position: ["bottomCenter"],
+                                    simple: true,
+                                    defaultPageSize: 6,
+                                    showSizeChanger: false,
+                                }}
+                                //pagination={false}
+                            />
                         </Card.Grid>
                     </Card>
-                    //<br />
                 )
             })}
             <pre>{JSON.stringify(xformed, null, 2)}</pre>

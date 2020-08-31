@@ -1,6 +1,6 @@
 const CracoLessPlugin = require("craco-less")
 const { ESLINT_MODES } = require("@craco/craco")
-import { primary_color } from "./src/colors"
+const { primary_color } = require("./src/colors")
 
 module.exports = {
     eslint: {
