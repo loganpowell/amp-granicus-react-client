@@ -155,7 +155,7 @@ export const BySender = ({ data }) => {
                     </Card>
                 )
             })}
-            <pre>{JSON.stringify(xformed, null, 2)}</pre>
+            {/*<pre>{JSON.stringify(xformed, null, 2)}</pre>*/}
         </>
     )
 }
