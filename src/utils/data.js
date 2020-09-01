@@ -310,7 +310,7 @@ __proto__: Object
  *
  * { 1: [{a:1, b:2, c:3}, {a:1, b:4, c:6}], 2: [{a:2, b:5, c:9}] }
  */
-export const collect_by_path = (path = [], entries = []) => {
+export const collect_by_path = (path, entries = []) => {
     let collection = {}
     entries.forEach(entry => {
         const prop = getIn(entry, path)

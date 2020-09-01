@@ -5,14 +5,6 @@ import { metric_name } from "../utils"
 import { primary_color, muted_color } from "../colors"
 
 const xform_bar = summary => {
-    //const {
-    //    success_count,
-    //    percent_emails_delivered,
-    //    percent_opened,
-    //    click_rate,
-    //    unsubscribe_rate,
-    //    engagement_rate,
-    //} = summary
     const xf = Object.entries(summary).reduce((a, c, i, d) => {
         const [k, v] = c
         const isPercent = k => metric_name(k).split("#").length === 1
@@ -35,7 +27,7 @@ export const Bar = ({ summary }) => {
     return (
         <ResponsiveBar
             data={xformed}
-            margin={{ top: 10, right: 10, bottom: 20, left: 100 }}
+            margin={{ top: -10, right: 10, bottom: 20, left: 100 }}
             padding={0.3}
             layout='horizontal'
             colors={primary_color}
