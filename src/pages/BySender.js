@@ -54,6 +54,14 @@ const metric_columns = [
         title: "Metric",
         dataIndex: "metric",
         //responsive: ["md"],
+        ellipsis: { showTitle: false },
+        render: metric => {
+            return (
+                <Tooltip placement='topLeft' title={metric}>
+                    {metric}
+                </Tooltip>
+            )
+        },
     },
     { title: "Value", dataIndex: "value" },
 ]
@@ -82,14 +90,14 @@ const bulletin_columns = reports => [
         key: "name",
         //responsive: ["md"],
         ellipsis: { showTitle: false },
-        render: name => {
-            const match = reports.find(report => report.subject === name)
+        render: subject => {
+            const match = reports.find(report => report.subject === subject)
             const id = match["id"]
             return (
                 <Tooltip
                     placement='topLeft'
                     //title={JSON.stringify(match, null, 2)}
-                    title={name}
+                    title={subject}
                 >
                     <a
                         href={
@@ -99,7 +107,7 @@ const bulletin_columns = reports => [
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        {name}
+                        {subject}
                     </a>
                 </Tooltip>
             )
@@ -109,7 +117,7 @@ const bulletin_columns = reports => [
         title: "Date",
         dataIndex: "date",
         key: "date",
-        //responsive: ["md"],
+        responsive: ["lg"],
     },
 ]
 
@@ -169,11 +177,11 @@ export const BySender = ({ data }) => {
                             />
                         </Grid>
                         <Grid style={grid_style}>
-                            <Heading>KPIs on Average by Rate</Heading>
+                            <Heading>KPIs (Avg. %)</Heading>
                             <SelectPie summary={summary} />
                         </Grid>
                         <Grid style={grid_style}>
-                            <Heading>KPIs on Average by Count</Heading>
+                            <Heading>KPIs (Avg. #)</Heading>
                             <Bar summary={summary} />
                         </Grid>
                         <Grid style={grid_style}>

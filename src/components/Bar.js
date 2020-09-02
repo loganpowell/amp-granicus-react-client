@@ -27,11 +27,12 @@ export const Bar = ({ summary }) => {
     return (
         <ResponsiveBar
             data={xformed}
-            margin={{ top: -10, right: 10, bottom: 20, left: 100 }}
-            padding={0.3}
+            margin={{ top: -10, right: 10, bottom: 30, left: 100 }}
+            padding={0.4}
             layout='horizontal'
             colors={primary_color}
             borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+            borderRadius={2}
             axisBottom={null}
             labelSkipWidth={12}
             labelSkipHeight={12}

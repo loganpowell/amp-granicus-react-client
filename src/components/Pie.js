@@ -78,7 +78,7 @@ export const SelectPie = ({ summary }) => {
             <Select
                 defaultValue='percent_emails_delivered'
                 onChange={select}
-                style={{ marginBottom: "1rem" }}
+                style={{ display: "block", margin: "0 1rem" }}
             >
                 {Object.entries(xformed).map(([k, v], i) => (
                     <Option value={k} key={i}>
