@@ -25,21 +25,23 @@ const xform_bar = summary => {
 export const Bar = ({ summary }) => {
     const xformed = xform_bar(summary)
     return (
-        <ResponsiveBar
-            data={xformed}
-            margin={{ top: -10, right: 10, bottom: 30, left: 100 }}
-            padding={0.4}
-            layout='horizontal'
-            colors={primary_color}
-            borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-            borderRadius={2}
-            axisBottom={null}
-            labelSkipWidth={12}
-            labelSkipHeight={12}
-            labelTextColor={muted_color}
-            animate={true}
-            motionStiffness={90}
-            motionDamping={15}
-        />
+        <div style={{ height: "90%" }}>
+            <ResponsiveBar
+                data={xformed}
+                margin={{ top: -10, right: 10, bottom: 0, left: 100 }}
+                padding={0.4}
+                layout='horizontal'
+                colors={primary_color}
+                borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+                borderRadius={2}
+                axisBottom={null}
+                labelSkipWidth={12}
+                labelSkipHeight={12}
+                labelTextColor={muted_color}
+                animate={true}
+                motionStiffness={90}
+                motionDamping={15}
+            />
+        </div>
     )
 }
