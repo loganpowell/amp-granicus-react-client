@@ -38,9 +38,9 @@ export const Bar = ({ summary }) => {
                 labelSkipWidth={12}
                 labelSkipHeight={12}
                 labelTextColor={muted_color}
-                animate={true}
-                motionStiffness={90}
-                motionDamping={15}
+                animate={false}
+                //motionStiffness={90}
+                //motionDamping={15}
             />
         </div>
     )

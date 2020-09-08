@@ -9,6 +9,7 @@
         "@-0/spool": "^0.2.81",
         "@-0/utils": "^0.2.69",
         "@nivo/bar": "^0.62.0",
+        "@nivo/bullet": "^0.62.0",
         "@nivo/pie": "^0.62.0",
         "@testing-library/jest-dom": "^5.11.2",
         "@testing-library/react": "^10.4.7",

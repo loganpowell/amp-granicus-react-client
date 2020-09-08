@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { ResponsivePie } from "@nivo/pie"
 import { Select, Tooltip } from "antd"
+import { Bullet } from "./Bullet"
 //import { InfoCircleOutlined } from "@ant-design/icons"
 
 import { primary_color, muted_color } from "../colors"
@@ -21,9 +22,9 @@ export const Pie = ({ data }) => {
             borderWidth={1}
             borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
             enableSlicesLabels={false}
-            animate={true}
-            motionStiffness={90}
-            motionDamping={15}
+            animate={false}
+            //motionStiffness={90}
+            //motionDamping={15}
             // radial labels
             enableRadialLabels={true}
             radialLabel={value}
@@ -32,11 +33,11 @@ export const Pie = ({ data }) => {
         />
     )
 }
-
+const isPercent = k => metric_name(k).split("#").length === 1
 const xform_pie = summary => {
     const xf = Object.entries(summary).reduce((a, c, i, d) => {
         const [k, v] = c
-        const isPercent = k => metric_name(k).split("#").length === 1
+
         if (isPercent(k)) {
             a[k] = [
                 {
@@ -59,17 +60,36 @@ const xform_pie = summary => {
     return xf
 }
 
+const xform_bullet = (summary, averages) => {
+    const xf = Object.entries(summary).reduce((a, c, i, d) => {
+        const [k, v] = c
+        if (isPercent(k)) {
+            a[k] = [
+                {
+                    id: k,
+                    ranges: [averages[k], 100],
+                    measures: [v],
+                    markers: [averages[k]],
+                },
+            ]
+        }
+        return a
+    }, {})
+    return xf
+}
 const { Option } = Select
 
-export const SelectPie = ({ summary }) => {
-    const xformed = xform_pie(summary)
+export const SelectPie = ({ summary, averages }) => {
+    const xformed_pie = xform_pie(summary)
+    const xformed_bullet = xform_bullet(summary, averages)
 
-    const [selection, setSelection] = useState(
-        xformed["percent_emails_delivered"]
-    )
+    const [selection, setSelection] = useState({
+        pie: xformed_pie["percent_emails_delivered"],
+        bullet: xformed_bullet["percent_emails_delivered"],
+    })
 
     const select = e => {
-        setSelection(xformed[e])
+        setSelection({ pie: xformed_pie[e], bullet: xformed_bullet[e] })
         //console.log({ e })
     }
 
@@ -80,7 +100,7 @@ export const SelectPie = ({ summary }) => {
                 onChange={select}
                 style={{ display: "block", margin: "0 1rem" }}
             >
-                {Object.entries(xformed).map(([k, v], i) => (
+                {Object.entries(xformed_pie).map(([k, v], i) => (
                     <Option value={k} key={i}>
                         {metric_name(k)}
                     </Option>
@@ -92,8 +112,11 @@ export const SelectPie = ({ summary }) => {
             >
                 <InfoCircleOutlined style={{ marginLeft: "1rem" }} />
             </Tooltip>*/}
-            <div style={{ height: "75%" }}>
-                <Pie data={selection} />
+            <div style={{ height: "68%" }}>
+                <Pie data={selection["pie"]} />
+            </div>
+            <div style={{ height: "7%", margin: "0 1rem" }}>
+                <Bullet data={selection["bullet"]} />
             </div>
         </>
     )

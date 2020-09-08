@@ -459,6 +459,44 @@ export const coll_aggregator_sender = data => {
     return out
 }
 
+/**
+ * @example
+ *
+ * const agr_coll = {
+ * 'test1@some.com':
+ *   { reports: [ [Object], [Object] ],
+ *     summary:
+ *      { success_count: 300,
+ *        percent_opened: 3,
+ *        click_rate: 5,
+ *        unsubscribe_rate: 1.5 } },
+ *  'test3@some.com':
+ *   { reports: [ [Object] ],
+ *     summary:
+ *      { success_count: 300,
+ *        percent_opened: 6,
+ *        click_rate: 8,
+ *        unsubscribe_rate: 3 } } }
+ * averaged(agr_coll) //?
+ * {
+ *  success_count: 300,
+ *  percent_opened: 4.5,
+ *  click_rate: 6.5,
+ *  unsubscribe_rate: 4
+ * }
+ */
+export const averaged = agr_coll =>
+    Object.entries(agr_coll).reduce((a, c, i, { length }) => {
+        const [_, stats] = c
+        const { summary } = stats
+        Object.entries(summary).forEach(([k, v]) => {
+            a[k] = a[k]
+                ? ~~((a[k] + v / length) * 100) / 100
+                : ~~((v / length) * 100) / 100
+        })
+        return a
+    }, {})
+
 export const metric_name = k =>
     k === "success_count"
         ? "Succeeded (#)"

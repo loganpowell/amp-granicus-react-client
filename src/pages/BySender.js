@@ -3,7 +3,7 @@ import { Card, Table, Tooltip, Typography } from "antd"
 
 import { primary_color } from "../colors"
 import { Filter, SelectPie, Bar } from "../components"
-import { coll_aggregator_sender, log, metric_name } from "../utils"
+import { coll_aggregator_sender, log, metric_name, averaged } from "../utils"
 
 //import { VegaLite } from "react-vega"
 //import { matrix_senders } from "../viz_specs"
@@ -142,6 +142,7 @@ const grid_style = {
 
 export const BySender = ({ data }) => {
     const xformed = coll_aggregator_sender(data)
+    const average = averaged(xformed)
     return (
         <>
             <Title style={{ color: primary_color, marginTop: "1em" }}>
@@ -178,7 +179,7 @@ export const BySender = ({ data }) => {
                         </Grid>
                         <Grid style={grid_style}>
                             <Heading>KPIs (Avg. %)</Heading>
-                            <SelectPie summary={summary} />
+                            <SelectPie summary={summary} averages={average} />
                         </Grid>
                         <Grid style={grid_style}>
                             <Heading>KPIs (Avg. #)</Heading>
@@ -201,6 +202,7 @@ export const BySender = ({ data }) => {
                     </Card>
                 )
             })}
+            {/*<pre>{JSON.stringify(average, null, 2)}</pre>*/}
             {/*<pre>{JSON.stringify(xformed, null, 2)}</pre>*/}
         </>
     )
