@@ -1,4 +1,5 @@
 import { tooltip_topics, time_axis } from "./utils"
+import { primary_color, secondary_color, accent_color } from "../colors"
 
 export const matrix_topics = {
     $schema: "https://vega.github.io/schema/vega-lite/v4.json",
@@ -25,7 +26,7 @@ export const matrix_topics = {
                 mark: {
                     type: "bar",
                     clip: true,
-                    color: "#e63946",
+                    color: accent_color,
                     //xOffset: -2,
                 },
                 encoding: {
@@ -58,7 +59,7 @@ export const matrix_topics = {
                         mark: {
                             type: "bar",
                             clip: true,
-                            color: "#00a8e8",
+                            color: secondary_color,
                             //xOffset: -2,
                         },
                         encoding: {
@@ -86,7 +87,7 @@ export const matrix_topics = {
                         mark: {
                             type: "bar",
                             clip: true,
-                            color: "#003459",
+                            color: primary_color,
                             //xOffset: -2,
                         },
                         encoding: {

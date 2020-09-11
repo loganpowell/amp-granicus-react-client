@@ -1,15 +1,23 @@
-import React, { useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import { isPlainObject } from "@thi.ng/checks"
 import { VegaLite } from "react-vega"
-import * as K from "@-0/keys"
-import { CTX } from "../context"
-import { log } from "../utils/data"
-import { Filter } from "../components"
-import { matrix3x3, matrix_campaign } from "../viz_specs"
+import { Button, Typography } from "antd"
 
+//import * as K from "@-0/keys"
+//import { CTX } from "../context"
+//import { log } from "../utils/data"
+import { primary_color } from "../colors"
+import { Filter } from "../components"
+import { matrix_campaign, matrix_campaign_h } from "../viz_specs"
+
+const { Title } = Typography
 export const ByCampaign = ({ data }) => {
+    const [isVertical, setIsVertical] = useState(true)
     return (
         <>
+            <Title style={{ color: primary_color, marginTop: "1em" }}>
+                By Campaign
+            </Title>
             <Filter
                 selections={{
                     id: "campaign",
@@ -18,8 +26,29 @@ export const ByCampaign = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <div style={{ backgroundColor: "white", padding: "1.5rem" }}>
-                <VegaLite data={{ data }} spec={matrix_campaign} />
+
+            <div
+                style={{
+                    backgroundColor: "white",
+                    padding: "1.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    flexWrap: "wrap",
+                }}
+            >
+                <Button
+                    type='primary'
+                    size='medium'
+                    style={{ marginBottom: "1rem", width: "8rem" }}
+                    onClick={() => setIsVertical(!isVertical)}
+                >
+                    View {isVertical ? "Horizontal" : "Vertical"}
+                </Button>
+                {isVertical ? (
+                    <VegaLite data={{ data }} spec={matrix_campaign} />
+                ) : (
+                    <VegaLite data={{ data }} spec={matrix_campaign_h} />
+                )}
             </div>
             {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>

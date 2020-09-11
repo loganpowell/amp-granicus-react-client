@@ -1,6 +1,6 @@
 import React from "react"
 import { ResponsiveBullet } from "@nivo/bullet"
-import { primary_color } from "../colors"
+import { primary_color, accent_color } from "../colors"
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
@@ -20,7 +20,7 @@ export const Bullet = ({ data }) => (
         //motionStiffness={90}
         //motionDamping={12}
         rangeColors='greys'
-        markerColors='red'
+        markerColors={accent_color}
         measureColors={primary_color}
     />
 )

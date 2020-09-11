@@ -28,44 +28,27 @@ export const Chrome = ({ children }) => {
             pathCursor.release()
         }
     }, [path, pathCursor])
+
     const [open, setOpen] = useState(true)
+
     return (
         <Layout>
-            {/*<Header className='header'>
-            <div className='logo' />
-            <Menu theme='dark' mode='horizontal' defaultSelectedKeys={["2"]}>
-                <Menu.Item key='1'>nav 1</Menu.Item>
-                <Menu.Item key='2'>nav 2</Menu.Item>
-                <Menu.Item key='3'>nav 3</Menu.Item>
-            </Menu>
-        </Header>*/}
             <Content
                 style={{
                     minHeight: "100vh",
                     //overflow: "hidden",
                 }}
             >
-                {/*<Breadcrumb style={{ margin: "16px 0" }}>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>*/}
-                <Layout
-                    //className='site-layout-background'
-                    style={{ minHeight: "100vh" }}
-                >
+                <Layout style={{ minHeight: "100vh" }}>
                     <Sider
                         collapsible
                         collapsed={open}
                         onCollapse={() => setOpen(!open)}
-                        //className='site-layout-background'
                         width={200}
                         style={{ background: "white" }}
                     >
                         <Menu
                             mode='inline'
-                            //theme='dark'
-
                             selectedKeys={[`/` + getIn(path, [0]) || "/sender"]}
                             //defaultOpenKeys={["sub1"]}
                             style={{
@@ -94,15 +77,6 @@ export const Chrome = ({ children }) => {
                             >
                                 By campaign
                             </Menu.Item>
-                            {/*<SubMenu
-                            key='sub1'
-                            icon={<UserOutlined />}
-                            title='subnav 2'
-                        >
-                            <Menu.Item key='2'>option2</Menu.Item>
-                            <Menu.Item key='3'>option3</Menu.Item>
-                            <Menu.Item key='4'>option4</Menu.Item>
-                        </SubMenu>*/}
                         </Menu>
                     </Sider>
                     <Content
