@@ -17,8 +17,8 @@ export const Bullet = ({ data }) => (
         markerSize={1}
         measureSize={0.4}
         animate={false}
-        motionStiffness={90}
-        motionDamping={12}
+        //motionStiffness={90}
+        //motionDamping={12}
         rangeColors='greys'
         markerColors='red'
         measureColors={primary_color}

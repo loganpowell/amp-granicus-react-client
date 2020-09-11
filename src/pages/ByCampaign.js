@@ -18,7 +18,9 @@ export const ByCampaign = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <VegaLite data={{ data }} spec={matrix_campaign} />
+            <div style={{ backgroundColor: "white", padding: "1.5rem" }}>
+                <VegaLite data={{ data }} spec={matrix_campaign} />
+            </div>
             {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )

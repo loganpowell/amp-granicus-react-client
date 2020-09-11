@@ -36,14 +36,13 @@ const data_metrics = summary =>
         const [k, v] = c
         if (
             metric_name(k).split("#").length === 1 ||
-            k === "success_count" ||
+            k === "emails_sent" ||
             k === "impressions"
-            //&&
         ) {
             a.push({
                 key: i,
                 metric: metric_name(k),
-                value: v,
+                value: v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
             })
         }
         return a

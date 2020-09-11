@@ -32,6 +32,8 @@ import { LogButton, Filter } from "../components"
 //
 //
 
+const sort_by_campaign_id_fn = (a, b) =>
+    a.campaign_id.toUpperCase() < b.campaign_id.toUpperCase() ? -1 : 1
 /**
  *
  * Even if you don't end up using `spule` - you may find the
@@ -141,7 +143,7 @@ export const routerCfg = async url => {
                             description: "Email marketing metrics by campaign",
                             //img_url,
                         },
-                        [K.DOM_BODY]: list,
+                        [K.DOM_BODY]: list.sort(sort_by_campaign_id_fn),
                     }
                 },
                 [K.URL_PAGE]: "campaigns",

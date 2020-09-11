@@ -21,6 +21,7 @@ export const matrix_topics = {
 
         hconcat: [
             {
+                title: "Unsubscribe Rate",
                 mark: {
                     type: "bar",
                     clip: true,
@@ -32,7 +33,7 @@ export const matrix_topics = {
                         field: "unsubscribe_rate",
                         type: "quantitative",
                         scale: {
-                            domain: [0, 1],
+                            domain: [0, 2],
                         },
                     },
 
@@ -51,6 +52,7 @@ export const matrix_topics = {
             },
 
             {
+                title: "Percent Opened | Click Rate",
                 layer: [
                     {
                         mark: {
@@ -112,6 +114,7 @@ export const matrix_topics = {
                 ],
             },
             {
+                title: "Punchcard",
                 mark: {
                     type: "rect",
                     tooltip: true,
@@ -125,6 +128,14 @@ export const matrix_topics = {
                 width: 300,
                 height: 200,
                 encoding: {
+                    //column: {
+                    //    field: "Punchcard",
+                    //    header: {
+                    //        titleFontSize: 15,
+                    //        titleLineHeight: 20,
+                    //        labelFontSize: 0,
+                    //    },
+                    //},
                     color: {
                         field: "engagement_rate",
                         type: "quantitative",

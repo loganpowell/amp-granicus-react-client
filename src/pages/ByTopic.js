@@ -17,7 +17,9 @@ export const ByTopic = ({ data }) => {
                     sort: "sort",
                 }}
             />
-            <VegaLite data={{ data }} spec={matrix_topics} />
+            <div style={{ backgroundColor: "white", padding: "1.5rem 0" }}>
+                <VegaLite data={{ data }} spec={matrix_topics} />
+            </div>
             {/*<VegaLite data={{ data }} spec={punchcard} />*/}
             {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>

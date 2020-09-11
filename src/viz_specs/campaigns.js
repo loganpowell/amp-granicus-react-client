@@ -7,13 +7,14 @@ export const matrix_campaign = {
         name: "data",
     },
     facet: {
-        row: {
-            sort: {
-                // 🚀 : https://github.com/vega/vega-lite/pull/3854#issuecomment-394954455
-                op: "median",
-                field: "engagement_rate",
-                order: "descending",
-            },
+        column: {
+            // flip: row:
+            //sort: {
+            //    // 🚀 : https://github.com/vega/vega-lite/pull/3854#issuecomment-394954455
+            //    op: "median",
+            //    field: "engagement_rate",
+            //    order: "descending",
+            //},
             field: "campaign_id",
             type: "nominal",
             header: {
@@ -21,6 +22,7 @@ export const matrix_campaign = {
                 labelOrient: "top",
                 labelAlign: "center",
                 labelFontSize: 12,
+                labelAngle: -90, // flip
             },
         },
     },
@@ -37,7 +39,8 @@ export const matrix_campaign = {
 
         hconcat: [
             {
-                width: 800,
+                width: 15, // flip: "container"
+                height: 500, // flip
                 layer: [
                     {
                         mark: {
@@ -48,7 +51,8 @@ export const matrix_campaign = {
                         },
 
                         encoding: {
-                            x: {
+                            y: {
+                                // flip: x:
                                 field: "percent_success",
                                 aggregate: "mean",
                                 scale: {
@@ -65,7 +69,8 @@ export const matrix_campaign = {
                             clip: true,
                         },
                         encoding: {
-                            x: {
+                            y: {
+                                // flip: x:
                                 field: "percent_opened",
                                 aggregate: "mean",
                                 scale: {
@@ -82,7 +87,8 @@ export const matrix_campaign = {
                             clip: true,
                         },
                         encoding: {
-                            x: {
+                            y: {
+                                // flip: x:
                                 field: "click_rate",
                                 aggregate: "mean",
                                 scale: {
@@ -99,7 +105,8 @@ export const matrix_campaign = {
                             clip: true,
                         },
                         encoding: {
-                            x: {
+                            y: {
+                                // flip: x:
                                 field: "engagement_rate",
                                 aggregate: "mean",
                                 scale: {

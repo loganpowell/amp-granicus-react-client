@@ -197,16 +197,18 @@ export const augment = props => {
         emails_delivered,
         unsubscribes,
         subject = "",
+        addresses_count,
         ...rest
     } = props
     const engagement_rate = ~~(
         ((opens_count + total_click_count) / emails_delivered) *
         100
     )
-    const subject_chars = subject.length
+    const subject_words = subject.split(" ").length
     const unsubscribe_rate = (unsubscribes / emails_delivered) * 100
     const impressions = total_click_count + nonunique_opens_count
     return {
+        emails_sent: addresses_count,
         ...props,
         unsubscribes,
         unsubscribe_rate,
@@ -215,8 +217,8 @@ export const augment = props => {
         avg_impressions: impressions,
         opens_count: nonunique_opens_count,
         unique_opens_count: opens_count,
-
-        ...(subject_chars && { subject_chars }),
+        addresses_count,
+        ...(subject_words && { subject_words }),
         ...rest,
     }
 }
@@ -438,6 +440,7 @@ export const coll_aggregator_sender = data => {
     Object.entries(collection).forEach(([sender, metrics]) => {
         out[sender] = {
             summary: apply_kv_ops({
+                emails_sent: sum,
                 success_count: sum,
                 percent_emails_delivered: avg,
                 percent_opened: avg,
@@ -526,4 +529,6 @@ export const metric_name = k =>
         ? "Unique Clicks (#)"
         : k === "avg_impressions"
         ? "Impressions (#)"
+        : k === "emails_sent"
+        ? "Sent (#)"
         : "(#)"
