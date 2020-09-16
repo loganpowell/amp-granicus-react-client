@@ -8,7 +8,8 @@ import { punchcard, matrix3x3, matrix_topics } from "../viz_specs"
 
 const { Title } = Typography
 
-export const ByTopic = ({ data }) => {
+export const ByTopic = ({ data = [] }) => {
+    const filtered = data.filter(x => x.emails_sent > 100)
     return (
         <>
             <Title style={{ color: primary_color, marginTop: "1em" }}>
@@ -26,10 +27,10 @@ export const ByTopic = ({ data }) => {
                 }}
             />
             <div style={{ backgroundColor: "white", padding: "1.5rem 0" }}>
-                <VegaLite data={{ data }} spec={matrix_topics} />
+                <VegaLite data={{ data: filtered }} spec={matrix_topics} />
             </div>
             {/*<VegaLite data={{ data }} spec={punchcard} />*/}
-            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
+            {/*<pre>{JSON.stringify(filtered, null, 2)}</pre>*/}
         </>
     )
 }

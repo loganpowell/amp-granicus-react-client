@@ -366,7 +366,8 @@ export const coll_by_path_aggregate = (path = [], entries = []) => {
     let coll = collect_by_path(path, entries)
     return Object.entries(coll).reduce((a, c, i, d) => {
         let [sender, reports] = c
-        a[sender] = { aggregate: aggregate_by_key(reports), reports }
+        const filtered = reports.filter(x => x.emails_sent > 100)
+        a[sender] = { aggregate: aggregate_by_key(filtered), filtered }
         return a
     }, {})
 }

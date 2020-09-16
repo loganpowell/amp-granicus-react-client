@@ -11,7 +11,9 @@ import { Filter } from "../components"
 import { matrix_campaign, matrix_campaign_h } from "../viz_specs"
 
 const { Title } = Typography
-export const ByCampaign = ({ data }) => {
+export const ByCampaign = ({ data = [] }) => {
+    const above100sent = data.filter(x => x.emails_sent > 100)
+    //const above100sent = data
     const [isVertical, setIsVertical] = useState(true)
     return (
         <>
@@ -45,12 +47,18 @@ export const ByCampaign = ({ data }) => {
                     View {isVertical ? "Horizontal" : "Vertical"}
                 </Button>
                 {isVertical ? (
-                    <VegaLite data={{ data }} spec={matrix_campaign} />
+                    <VegaLite
+                        data={{ data: above100sent }}
+                        spec={matrix_campaign}
+                    />
                 ) : (
-                    <VegaLite data={{ data }} spec={matrix_campaign_h} />
+                    <VegaLite
+                        data={{ data: above100sent }}
+                        spec={matrix_campaign_h}
+                    />
                 )}
             </div>
-            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
+            {/*<pre>{JSON.stringify(above100sent, null, 2)}</pre>*/}
         </>
     )
 }
