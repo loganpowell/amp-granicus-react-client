@@ -75,7 +75,7 @@ const metric_columns = [
 //
 //
 
-const data_bulletins = reports =>
+const data_bulletins = (reports = []) =>
     reports.map((report, key) => ({
         key,
         name: report.subject,
@@ -139,7 +139,7 @@ const grid_style = {
     padding: "1rem",
 }
 
-export const BySender = ({ data }) => {
+export const BySender = ({ data = [] }) => {
     const xformed = coll_aggregator_sender(data)
     const average = averaged(xformed)
     return (
@@ -202,7 +202,8 @@ export const BySender = ({ data }) => {
                 )
             })}
             {/*<pre>{JSON.stringify(average, null, 2)}</pre>*/}
-            {/*<pre>{JSON.stringify(xformed, null, 2)}</pre>*/}
+            <pre>{JSON.stringify(xformed, null, 2)}</pre>
+            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
 }

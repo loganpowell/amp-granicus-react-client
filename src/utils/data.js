@@ -366,8 +366,7 @@ export const coll_by_path_aggregate = (path = [], entries = []) => {
     let coll = collect_by_path(path, entries)
     return Object.entries(coll).reduce((a, c, i, d) => {
         let [sender, reports] = c
-        const filtered = reports.filter(x => x.emails_sent > 100)
-        a[sender] = { aggregate: aggregate_by_key(filtered), filtered }
+        a[sender] = { aggregate: aggregate_by_key(reports), reports }
         return a
     }, {})
 }
@@ -432,7 +431,8 @@ export const apply_kv_ops = (key_reduction_map = {}) => (aggregate = {}) => {
  *        unsubscribe_rate: 3 } } }
  */
 export const coll_aggregator_sender = data => {
-    const collection = coll_by_path_aggregate(["sender_email"], data)
+    const filtered = data.filter(x => x.emails_sent > 100)
+    const collection = coll_by_path_aggregate(["sender_email"], filtered)
     const avg = [(a, c, i, { length }) => ~~((a + c / length) * 100) / 100, 0]
     const sum = [(a, c, i, d) => a + c, 0]
 
