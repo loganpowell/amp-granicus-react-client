@@ -202,7 +202,7 @@ export const BySender = ({ data = [] }) => {
                 )
             })}
             {/*<pre>{JSON.stringify(average, null, 2)}</pre>*/}
-            <pre>{JSON.stringify(xformed, null, 2)}</pre>
+            {/*<pre>{JSON.stringify(xformed, null, 2)}</pre>*/}
             {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
