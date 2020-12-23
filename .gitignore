@@ -2,6 +2,7 @@
 .env
 up.json
 up-env.json
+src/misc
 
 # dependencies
 /node_modules

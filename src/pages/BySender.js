@@ -56,7 +56,7 @@ const metric_columns = [
         ellipsis: { showTitle: false },
         render: metric => {
             return (
-                <Tooltip placement='topLeft' title={metric}>
+                <Tooltip placement="topLeft" title={metric}>
                     {metric}
                 </Tooltip>
             )
@@ -94,7 +94,7 @@ const bulletin_columns = reports => [
             const id = match["id"]
             return (
                 <Tooltip
-                    placement='topLeft'
+                    placement="topLeft"
                     //title={JSON.stringify(match, null, 2)}
                     title={subject}
                 >
@@ -103,8 +103,8 @@ const bulletin_columns = reports => [
                             "https://admin.govdelivery.com/reports/bulletin_details/" +
                             id
                         }
-                        target='_blank'
-                        rel='noopener noreferrer'
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         {subject}
                     </a>
@@ -139,6 +139,13 @@ const grid_style = {
     padding: "1rem",
 }
 
+const sender_split = name =>
+    name
+        .split("@")[0]
+        .split(".")
+        .map(x => x.charAt(0).toUpperCase() + x.slice(1))
+        .join(" ")
+
 export const BySender = ({ data = [] }) => {
     const xformed = coll_aggregator_sender(data)
     const average = averaged(xformed)
@@ -155,16 +162,13 @@ export const BySender = ({ data = [] }) => {
                     sort: "sort",
                 }}
             />
-            {/*<VegaLite
-                data={{ data }}
-                style={{ width: "85%" }}
-                spec={matrix_senders}
-            />*/}
+
             {Object.entries(xformed).map(([sender, metrics], idx) => {
                 const { summary, reports } = metrics
+
                 return (
                     <Card
-                        title={sender}
+                        title={sender_split(sender)}
                         key={idx}
                         style={{ marginBottom: "1rem" }}
                     >
@@ -172,7 +176,7 @@ export const BySender = ({ data = [] }) => {
                             <Table
                                 dataSource={data_metrics(summary)}
                                 columns={metric_columns}
-                                size='small'
+                                size="small"
                                 pagination={false}
                             />
                         </Grid>
@@ -188,7 +192,7 @@ export const BySender = ({ data = [] }) => {
                             <Table
                                 dataSource={data_bulletins(reports)}
                                 columns={bulletin_columns(reports)}
-                                size='small'
+                                size="small"
                                 pagination={{
                                     position: ["bottomCenter"],
                                     simple: true,
@@ -202,8 +206,6 @@ export const BySender = ({ data = [] }) => {
                 )
             })}
             {/*<pre>{JSON.stringify(average, null, 2)}</pre>*/}
-            {/*<pre>{JSON.stringify(xformed, null, 2)}</pre>*/}
-            {/*<pre>{JSON.stringify(data, null, 2)}</pre>*/}
         </>
     )
 }
